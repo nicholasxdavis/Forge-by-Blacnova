@@ -1,0 +1,1191 @@
+ <!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Designer - Forge by Blacnova</title>
+    <meta name="description" content="A powerful design tool made for developers. Create stunning designs with ease, no design experience required. Perfect for front-end developers.">
+
+    <!-- SEO Meta Tags -->
+    <meta name="keywords" content="Designer for Devs, design tool, web design, front-end developers, design for developers, digital toolkit, UI design, Forge tools, Blacnova">
+    <meta name="author" content="Nicholas Xander Davis, Blacnova Development">
+    <meta name="robots" content="index, follow">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Designer for Devs - Forge by Blacnova">
+    <meta property="og:description" content="The perfect design tool for developers. Quickly create beautiful, responsive designs without needing to be a designer.">
+    <meta property="og:image" content="./images/forge.png">
+    <meta property="og:url" content="https://www.forgebyblacnova.net/designer.html">
+    <meta property="og:site_name" content="Forge by Blacnova">
+
+    <!-- Twitter Meta -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Designer for Devs - Forge by Blacnova">
+    <meta name="twitter:description" content="Create web designs fast and easy with Designer for Devs. Built for developers to design without the steep learning curve.">
+    <meta name="twitter:image" content="./images/forge.png">
+    <meta name="twitter:creator" content="@forgebyblacnova">
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="images/forge.png" type="image/png">
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        forge: {
+                            50: '#fff7ed',
+                            100: '#ffedd5',
+                            200: '#fed7aa',
+                            300: '#fdba74',
+                            400: '#fb923c',
+                            500: '#f97316',
+                            600: '#ea580c',
+                            700: '#c2410c',
+                            800: '#9a3412',
+                            900: '#7c2d12',
+                        },
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 0.5s ease-in forwards',
+                        'fade-in-up': 'fadeInUp 0.6s ease-out forwards',
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: '0' },
+                            '100%': { opacity: '1' },
+                        },
+                        fadeInUp: {
+                            '0%': { opacity: '0', transform: 'translateY(20px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        },
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+
+    <style>
+        .gradient-text {
+            background: linear-gradient(90deg, #f97316, #ea580c);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        .gradient-bg {
+            background: linear-gradient(135deg, #f97316, #ea580c);
+        }
+        .tool-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(249, 115, 22, 0.2), 0 10px 10px -5px rgba(249, 115, 22, 0.1);
+        }
+        .tool-card {
+            transition: all 0.3s ease;
+        }
+        .animate-delay-100 {
+            animation-delay: 0.1s;
+        }
+        .animate-delay-200 {
+            animation-delay: 0.2s;
+        }
+        .animate-delay-300 {
+            animation-delay: 0.3s;
+        }
+        .animate-delay-400 {
+            animation-delay: 0.4s;
+        }
+        .animate-delay-500 {
+            animation-delay: 0.5s;
+        }
+        .header-blur {
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+    </style>
+<body class="bg-white font-sans text-gray-800 antialiased">
+<nav class="fixed w-full bg-white/80 header-blur shadow-sm z-50 border-b border-gray-100">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between h-16 items-center">
+            <div class="flex items-center">
+                <a href="index.html" class="flex items-center space-x-2">
+                    <img src="images/logo.svg" alt="Forge Logo" class="h-8 w-auto">
+                    <span class="text-xl font-medium text-gray-900">Forge by Blacnova</span>
+                </a>
+            </div>
+            <div class="hidden md:flex items-center space-x-8">
+                <a href="index.html#features" class="text-gray-600 hover:text-forge-600 transition-colors font-medium">Features</a>
+                
+                <!-- Tools Dropdown -->
+                <div class="relative group" x-data="{ open: false, activeCategory: 'productivity' }" @mouseenter="open = true" @mouseleave="open = false">
+                    <button class="text-gray-600 hover:text-forge-600 transition-colors font-medium flex items-center">
+                        Tools
+                        <svg class="w-4 h-4 ml-1 transition-transform duration-200" :class="{ 'rotate-180': open }" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </button>
+                    
+                    <!-- Dropdown Panel -->
+                    <div x-show="open" x-transition:enter="transition ease-out duration-200" 
+                         x-transition:enter-start="opacity-0 translate-y-1" 
+                         x-transition:enter-end="opacity-100 translate-y-0" 
+                         x-transition:leave="transition ease-in duration-150" 
+                         x-transition:leave-start="opacity-100 translate-y-0" 
+                         x-transition:leave-end="opacity-0 translate-y-1"
+                         class="absolute left-0 mt-2 w-[600px] bg-white rounded-lg shadow-xl border border-gray-200 overflow-hidden z-50"
+                         @mouseenter="open = true" @mouseleave="open = false">
+                        <div class="grid grid-cols-3">
+                            <!-- Categories Column -->
+                            <div class="col-span-1 bg-gray-50 p-4">
+                                <h3 class="font-medium text-gray-900 mb-3">Categories</h3>
+                                <ul class="space-y-2">
+                                    <li>
+                                        <button @mouseenter="activeCategory = 'productivity'" 
+                                                :class="{ 'text-forge-600 bg-white shadow-sm': activeCategory === 'productivity', 'text-gray-700': activeCategory !== 'productivity' }"
+                                                class="w-full text-left px-3 py-2 rounded-md font-medium hover:bg-gray-100 transition-colors">
+                                            Productivity
+                                        </button>
+                                    </li>
+                                    <li>
+                                        <button @mouseenter="activeCategory = 'devtools'" 
+                                                :class="{ 'text-forge-600 bg-white shadow-sm': activeCategory === 'devtools', 'text-gray-700': activeCategory !== 'devtools' }"
+                                                class="w-full text-left px-3 py-2 rounded-md font-medium hover:bg-gray-100 transition-colors">
+                                            Dev Tools
+                                        </button>
+                                    </li>
+                                    <li>
+                                        <button @mouseenter="activeCategory = 'filetools'" 
+                                                :class="{ 'text-forge-600 bg-white shadow-sm': activeCategory === 'filetools', 'text-gray-700': activeCategory !== 'filetools' }"
+                                                class="w-full text-left px-3 py-2 rounded-md font-medium hover:bg-gray-100 transition-colors">
+                                            File Tools
+                                        </button>
+                                    </li>
+                                    <li>
+                                        <button @mouseenter="activeCategory = 'generators'" 
+                                                :class="{ 'text-forge-600 bg-white shadow-sm': activeCategory === 'generators', 'text-gray-700': activeCategory !== 'generators' }"
+                                                class="w-full text-left px-3 py-2 rounded-md font-medium hover:bg-gray-100 transition-colors">
+                                            Generators
+                                        </button>
+                                    </li>
+                                    <li>
+                                        <button @mouseenter="activeCategory = 'writing'" 
+                                                :class="{ 'text-forge-600 bg-white shadow-sm': activeCategory === 'writing', 'text-gray-700': activeCategory !== 'writing' }"
+                                                class="w-full text-left px-3 py-2 rounded-md font-medium hover:bg-gray-100 transition-colors">
+                                            Writing
+                                        </button>
+                                    </li>
+                                    <li>
+                                        <button @mouseenter="activeCategory = 'converters'" 
+                                                :class="{ 'text-forge-600 bg-white shadow-sm': activeCategory === 'converters', 'text-gray-700': activeCategory !== 'converters' }"
+                                                class="w-full text-left px-3 py-2 rounded-md font-medium hover:bg-gray-100 transition-colors">
+                                            Converters
+                                        </button>
+                                    </li>
+                                </ul>
+                            </div>
+                            
+                            <!-- Tools Column -->
+                            <div class="col-span-2 p-4">
+                                <!-- Productivity Tools -->
+                                <div x-show="activeCategory === 'productivity'" class="space-y-3">
+                                    <h4 class="font-medium text-gray-900 mb-2">Productivity Tools</h4>
+                                    <a href="./tasks.html" class="block px-3 py-2 rounded-md hover:bg-gray-50 transition-colors">
+                                        <p class="font-medium">Task Manager</p>
+                                        <p class="text-sm text-gray-500">Organize your tasks and to-dos</p>
+                                    </a>
+                                    <a href="./calander.html" class="block px-3 py-2 rounded-md hover:bg-gray-50 transition-colors">
+                                        <p class="font-medium">Calendar</p>
+                                        <p class="text-sm text-gray-500">Manage your schedule and events</p>
+                                    </a>
+                                    <a href="./qrcode.html" class="block px-3 py-2 rounded-md hover:bg-gray-50 transition-colors">
+                                        <p class="font-medium">QR Code Generator</p>
+                                        <p class="text-sm text-gray-500">Create QR codes for any content</p>
+                                    </a>
+                                </div>
+                                
+                                <!-- Dev Tools -->
+                                <div x-show="activeCategory === 'devtools'" class="space-y-3" style="display: none;">
+                                    <h4 class="font-medium text-gray-900 mb-2">Developer Tools</h4>
+                                    <a href="./designer.html" class="block px-3 py-2 rounded-md hover:bg-gray-50 transition-colors">
+                                        <p class="font-medium">Designer</p>
+                                        <p class="text-sm text-gray-500">Create graphics and visual designs</p>
+                                    </a>
+                                    <a href="./playground.html" class="block px-3 py-2 rounded-md hover:bg-gray-50 transition-colors">
+                                        <p class="font-medium">Playground</p>
+                                        <p class="text-sm text-gray-500">Experiment with code snippets</p>
+                                    </a>
+                                </div>
+                                
+                                <!-- File Tools -->
+                                <div x-show="activeCategory === 'filetools'" class="space-y-3" style="display: none;">
+                                    <h4 class="font-medium text-gray-900 mb-2">File Tools</h4>
+                                    <a href="./filesplitter.html" class="block px-3 py-2 rounded-md hover:bg-gray-50 transition-colors">
+                                        <p class="font-medium">File Splitter</p>
+                                        <p class="text-sm text-gray-500">Split large files into smaller parts</p>
+                                    </a>
+                                    <a href="./compressor.html" class="block px-3 py-2 rounded-md hover:bg-gray-50 transition-colors">
+                                        <p class="font-medium">File Compressor</p>
+                                        <p class="text-sm text-gray-500">Reduce file sizes efficiently</p>
+                                    </a>
+                                </div>
+                                
+                                <!-- Generators -->
+                                <div x-show="activeCategory === 'generators'" class="space-y-3" style="display: none;">
+                                    <h4 class="font-medium text-gray-900 mb-2">Generators</h4>
+                                    <a href="./usernamegen.html" class="block px-3 py-2 rounded-md hover:bg-gray-50 transition-colors">
+                                        <p class="font-medium">Username Generator</p>
+                                        <p class="text-sm text-gray-500">Create unique usernames</p>
+                                    </a>
+                                    <a href="./colorgen.html" class="block px-3 py-2 rounded-md hover:bg-gray-50 transition-colors">
+                                        <p class="font-medium">Color Generator</p>
+                                        <p class="text-sm text-gray-500">Generate color palettes</p>
+                                    </a>
+                                    <a href="./namegen.html" class="block px-3 py-2 rounded-md hover:bg-gray-50 transition-colors">
+                                        <p class="font-medium">Name Generator</p>
+                                        <p class="text-sm text-gray-500">Generate random names</p>
+                                    </a>
+                                    <a href="./passwordgen.html" class="block px-3 py-2 rounded-md hover:bg-gray-50 transition-colors">
+                                        <p class="font-medium">Password Generator</p>
+                                        <p class="text-sm text-gray-500">Create secure passwords</p>
+                                    </a>
+                                    <a href="./numbergen.html" class="block px-3 py-2 rounded-md hover:bg-gray-50 transition-colors">
+                                        <p class="font-medium">Number Generator</p>
+                                        <p class="text-sm text-gray-500">Generate random numbers</p>
+                                    </a>
+                                </div>
+                                
+                                <!-- Writing Tools -->
+                                <div x-show="activeCategory === 'writing'" class="space-y-3" style="display: none;">
+                                    <h4 class="font-medium text-gray-900 mb-2">Writing Tools</h4>
+                                    <a href="./grammar.html" class="block px-3 py-2 rounded-md hover:bg-gray-50 transition-colors">
+                                        <p class="font-medium">Grammar Checker</p>
+                                        <p class="text-sm text-gray-500">Improve your writing quality</p>
+                                    </a>
+                                    <a href="./notes.html" class="block px-3 py-2 rounded-md hover:bg-gray-50 transition-colors">
+                                        <p class="font-medium">Notes</p>
+                                        <p class="text-sm text-gray-500">Capture and organize your thoughts</p>
+                                    </a>
+                                </div>
+                                
+                                <!-- Converters -->
+                                <div x-show="activeCategory === 'converters'" class="space-y-3" style="display: none;">
+                                    <h4 class="font-medium text-gray-900 mb-2">Converters</h4>
+                                    <a href="./timeconverter.html" class="block px-3 py-2 rounded-md hover:bg-gray-50 transition-colors">
+                                        <p class="font-medium">Time Converter</p>
+                                        <p class="text-sm text-gray-500">Convert between time zones</p>
+                                    </a>
+                                    <a href="./currencyconverter.html" class="block px-3 py-2 rounded-md hover:bg-gray-50 transition-colors">
+                                        <p class="font-medium">Currency Converter</p>
+                                        <p class="text-sm text-gray-500">Convert between currencies</p>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <a href="index.html#pricing" class="text-gray-600 hover:text-forge-600 transition-colors font-medium">Pricing</a>
+                <a href="index.html#faq" class="text-gray-600 hover:text-forge-600 transition-colors font-medium">FAQ</a>
+                <a href="contact.html" class="text-gray-600 hover:text-forge-600 transition-colors font-medium">Contact</a>
+            </div>
+            <div class="flex items-center">
+                <a href="download.html" class="hidden md:block px-4 py-2 rounded-lg bg-forge-600 text-white font-medium hover:bg-forge-700 transition-colors shadow-md">
+                    Our Extensions
+                </a>
+                <button id="mobile-menu-button" class="md:hidden text-gray-600 hover:text-forge-600 focus:outline-none">
+                    <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile menu -->
+    <div id="mobile-menu" class="md:hidden hidden bg-white border-t border-gray-200">
+        <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+            <a href="index.html#features" class="block px-3 py-2 rounded-md text-base font-medium text-gray-600 hover:text-forge-600 hover:bg-forge-50">Features</a>
+            <a href="index.html#tools" class="block px-3 py-2 rounded-md text-base font-medium text-gray-600 hover:text-forge-600 hover:bg-forge-50">Tools</a>
+            <a href="index.html#pricing" class="block px-3 py-2 rounded-md text-base font-medium text-gray-600 hover:text-forge-600 hover:bg-forge-50">Pricing</a>
+            <a href="index.html#faq" class="block px-3 py-2 rounded-md text-base font-medium text-gray-600 hover:text-forge-600 hover:bg-forge-50">FAQ</a>
+            <a href="contact.html" class="block px-3 py-2 rounded-md text-base font-medium text-gray-600 hover:text-forge-600 hover:bg-forge-50">Contact</a>
+            <a href="download.html" class="block px-3 py-2 rounded-md text-base font-medium text-white bg-forge-600 hover:bg-forge-700">Get Started</a>
+        </div>
+    </div>
+</nav>
+
+<script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+
+<!-- Updated JavaScript -->
+<script>
+    // Mobile menu toggle
+    const mobileMenuButton = document.getElementById('mobile-menu-button');
+    const mobileMenu = document.getElementById('mobile-menu');
+
+    mobileMenuButton.addEventListener('click', function() {
+        const isExpanded = mobileMenuButton.getAttribute('aria-expanded') === 'true';
+        mobileMenuButton.setAttribute('aria-expanded', !isExpanded);
+        mobileMenu.classList.toggle('hidden');
+        
+        // Toggle between menu and close icon
+        if (!isExpanded) {
+            mobileMenuButton.innerHTML = `
+                <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            `;
+        } else {
+            mobileMenuButton.innerHTML = `
+                <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+            `;
+        }
+    });
+
+    // Close mobile menu when clicking on a link
+    document.querySelectorAll('#mobile-menu a').forEach(link => {
+        link.addEventListener('click', () => {
+            mobileMenu.classList.add('hidden');
+            mobileMenuButton.setAttribute('aria-expanded', 'false');
+            mobileMenuButton.innerHTML = `
+                <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+            `;
+        });
+    });
+
+    // FAQ toggle functionality
+    document.querySelectorAll('.faq-toggle').forEach(button => {
+        button.addEventListener('click', () => {
+            const content = button.nextElementSibling;
+            const icon = button.querySelector('svg');
+            
+            // Toggle content visibility
+            content.classList.toggle('hidden');
+            
+            // Toggle icon rotation
+            icon.classList.toggle('rotate-180');
+            
+            // Close other open FAQs
+            document.querySelectorAll('.faq-toggle').forEach(otherButton => {
+                if (otherButton !== button) {
+                    otherButton.nextElementSibling.classList.add('hidden');
+                    otherButton.querySelector('svg').classList.remove('rotate-180');
+                }
+            });
+        });
+    });
+
+    // Smooth scrolling for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            const targetId = this.getAttribute('href');
+            if (targetId === '#') return;
+            
+            const targetElement = document.querySelector(targetId);
+            if (targetElement) {
+                targetElement.scrollIntoView({
+                    behavior: 'smooth'
+                });
+            }
+        });
+    });
+
+    // Animation on scroll
+    function animateOnScroll() {
+        const elements = document.querySelectorAll('.animate-fade-in-up');
+        
+        elements.forEach(element => {
+            const elementPosition = element.getBoundingClientRect().top;
+            const screenPosition = window.innerHeight / 1.2;
+            
+            if (elementPosition < screenPosition) {
+                element.style.opacity = '1';
+                element.style.transform = 'translateY(0)';
+            }
+        });
+    }
+
+    // Run once on page load
+    animateOnScroll();
+    
+    // Run on scroll
+    window.addEventListener('scroll', animateOnScroll);
+</script>
+
+
+<section id="design-center" class="py-20 bg-gray-50">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-12">
+      <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-forge-100 text-forge-800 mb-4">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" />
+        </svg>
+        Design Tools
+      </span>
+      <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Design Center</h2>
+      <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+        Advanced tools for modern designers with real-time previews
+      </p>
+    </div>
+
+    <div class="grid lg:grid-cols-3 gap-8">
+      <!-- Color Studio -->
+      <div class="lg:col-span-2 bg-white rounded-xl shadow-lg overflow-hidden border border-gray-200">
+        <div class="p-4 bg-gray-50 border-b border-gray-200 flex justify-between items-center">
+          <h3 class="font-medium text-gray-900">Color Studio</h3>
+          <div class="flex space-x-2">
+            <button id="export-palette" class="text-sm font-medium text-forge-600 hover:text-forge-700 flex items-center">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+              </svg>
+              Copy All
+            </button>
+            <button id="random-palette" class="text-sm font-medium text-forge-600 hover:text-forge-700 flex items-center">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+              </svg>
+              Randomize
+            </button>
+          </div>
+        </div>
+        <div class="p-4">
+          <div class="grid grid-cols-5 md:grid-cols-7 lg:grid-cols-5 gap-3 mb-6" id="color-palette">
+            <!-- Colors will be injected here -->
+          </div>
+          
+          <div class="bg-gray-50 rounded-lg p-4">
+            <div class="flex items-center justify-between mb-3">
+              <h4 class="font-medium text-gray-900">Color Picker</h4>
+              <div class="flex items-center text-sm">
+                <span id="current-color-hex" class="font-mono mr-2">#3b82f6</span>
+                <button id="copy-hex" class="text-forge-600 hover:text-forge-700">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <input type="color" id="color-picker" value="#3b82f6" class="w-full h-12 cursor-pointer">
+              </div>
+              <div>
+                <div class="grid grid-cols-3 gap-2 text-xs">
+                  <div>
+                    <label class="block text-gray-700 mb-1">RGB</label>
+                    <div class="font-mono p-2 bg-white rounded border border-gray-200" id="rgb-value">59, 130, 246</div>
+                  </div>
+                  <div>
+                    <label class="block text-gray-700 mb-1">HSL</label>
+                    <div class="font-mono p-2 bg-white rounded border border-gray-200" id="hsl-value">213°, 92%, 60%</div>
+                  </div>
+                  <div>
+                    <label class="block text-gray-700 mb-1">CMYK</label>
+                    <div class="font-mono p-2 bg-white rounded border border-gray-200" id="cmyk-value">76, 47, 0, 4</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Typography Lab -->
+      <div class="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-200">
+        <div class="p-4 bg-gray-50 border-b border-gray-200">
+          <h3 class="font-medium text-gray-900">Typography Lab</h3>
+        </div>
+        <div class="p-4">
+          <div class="mb-6">
+            <div class="flex items-center justify-between mb-3">
+              <label class="block text-sm font-medium text-gray-700">Font Family</label>
+              <select id="font-family" class="text-sm border border-gray-300 rounded-md py-1 px-2">
+                <option value="inter">Inter (System UI)</option>
+                <option value="georgia">Georgia (Serif)</option>
+                <option value="courier">Courier (Monospace)</option>
+                <option value="poppins">Poppins (Modern)</option>
+                <option value="playfair">Playfair (Elegant)</option>
+              </select>
+            </div>
+            <div class="flex items-center justify-between mb-3">
+              <label class="block text-sm font-medium text-gray-700">Font Size</label>
+              <input type="range" id="font-size" min="12" max="72" value="16" class="w-24">
+              <span id="font-size-value" class="text-sm w-8 text-right">16px</span>
+            </div>
+            <div class="flex items-center justify-between mb-3">
+              <label class="block text-sm font-medium text-gray-700">Line Height</label>
+              <input type="range" id="line-height" min="1" max="2" step="0.1" value="1.5" class="w-24">
+              <span id="line-height-value" class="text-sm w-8 text-right">1.5</span>
+            </div>
+            <div class="flex items-center justify-between">
+              <label class="block text-sm font-medium text-gray-700">Font Weight</label>
+              <select id="font-weight" class="text-sm border border-gray-300 rounded-md py-1 px-2">
+                <option value="300">Light</option>
+                <option value="400">Regular</option>
+                <option value="500">Medium</option>
+                <option value="600">SemiBold</option>
+                <option value="700">Bold</option>
+              </select>
+            </div>
+          </div>
+          
+          <div class="bg-gray-50 rounded-lg p-4 mb-4">
+            <div class="flex items-center justify-between mb-2">
+              <h4 class="font-medium text-gray-900">Preview</h4>
+              <button id="copy-font-css" class="text-xs text-forge-600 hover:text-forge-700 flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
+                </svg>
+                Copy CSS
+              </button>
+            </div>
+            <div id="typography-preview" class="min-h-[120px] p-3 bg-white rounded border border-gray-200">
+              <h3 class="text-lg font-bold mb-2">The quick brown fox</h3>
+              <p class="text-gray-700">Jumps over the lazy dog. 1234567890</p>
+            </div>
+          </div>
+          
+          <div class="text-xs text-gray-500">
+            <p>Fonts are loaded dynamically. Larger families may take a moment to render.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Gradient Master -->
+      <div class="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-200">
+        <div class="p-4 bg-gray-50 border-b border-gray-200">
+          <h3 class="font-medium text-gray-900">Gradient Master</h3>
+        </div>
+        <div class="p-4">
+          <div id="gradient-preview" class="h-40 rounded-lg mb-4" style="background: linear-gradient(90deg, #3b82f6, #8b5cf6);"></div>
+          
+          <div class="grid grid-cols-2 gap-4 mb-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Start Color</label>
+              <div class="flex items-center">
+                <input type="color" id="gradient-start" value="#3b82f6" class="w-8 h-8 border border-gray-300 rounded mr-2 cursor-pointer">
+                <input type="text" id="gradient-start-hex" value="#3b82f6" class="flex-1 text-sm border border-gray-300 rounded-md py-1 px-2 font-mono">
+              </div>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">End Color</label>
+              <div class="flex items-center">
+                <input type="color" id="gradient-end" value="#8b5cf6" class="w-8 h-8 border border-gray-300 rounded mr-2 cursor-pointer">
+                <input type="text" id="gradient-end-hex" value="#8b5cf6" class="flex-1 text-sm border border-gray-300 rounded-md py-1 px-2 font-mono">
+              </div>
+            </div>
+          </div>
+          
+          <div class="mb-4">
+            <label class="block text-sm font-medium text-gray-700 mb-1">Angle</label>
+            <div class="flex items-center">
+              <input type="range" id="gradient-angle" min="0" max="360" value="90" class="flex-1 mr-3">
+              <span id="gradient-angle-value" class="text-sm w-10">90°</span>
+            </div>
+          </div>
+          
+          <div class="flex justify-between">
+            <button id="gradient-random" class="text-sm font-medium text-forge-600 hover:text-forge-700 flex items-center">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+              </svg>
+              Random
+            </button>
+            <button id="gradient-copy" class="text-sm bg-forge-600 text-white py-1.5 px-3 rounded-md hover:bg-forge-700 flex items-center">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
+              </svg>
+              Copy CSS
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Enhanced Design System Inspector -->
+      <div class="lg:col-span-2 bg-white rounded-xl shadow-lg overflow-hidden border border-gray-200">
+        <!-- Header with interactive controls -->
+        <div class="p-4 bg-gray-50 border-b border-gray-200 flex justify-between items-center">
+          <h3 class="font-medium text-gray-900 flex items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-gray-500" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.836-2.942.734-2.106 2.106.54.886.061 2.042-.947 2.287-1.561.379-1.561 2.6 0 2.978a1.532 1.532 0 01.947 2.287c-.836 1.372.734 2.942 2.106 2.106a1.532 1.532 0 012.287.947c.379 1.561 2.6 1.561 2.978 0a1.533 1.533 0 012.287-.947c1.372.836 2.942-.734 2.106-2.106a1.533 1.533 0 01.947-2.287c1.561-.379 1.561-2.6 0-2.978a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106a1.532 1.532 0 01-2.287-.947zM10 13a3 3 0 100-6 3 3 0 000 6z" clip-rule="evenodd" />
+            </svg>
+            Design System Inspector
+          </h3>
+          <div class="flex space-x-2"></div>
+        </div>
+        
+        <!-- Main content with tabs -->
+        <div class="p-4">
+          <!-- Tab navigation -->
+          <div class="flex border-b border-gray-200 mb-4">
+            <button class="px-4 py-2 text-sm font-medium text-gray-700 border-b-2 border-blue-500">Foundation</button>
+          </div>
+          
+          <!-- Grid layout for design system elements -->
+          <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Enhanced Spacing Scale -->
+            <div class="bg-gray-50 p-3 rounded-lg">
+              <h4 class="text-sm font-medium text-gray-700 mb-3 flex items-center justify-between">
+                <span>Spacing Scale</span>
+                <span class="text-xs font-mono bg-gray-200 px-2 py-1 rounded">spacing.scss</span>
+              </h4>
+              <div class="space-y-4">
+                <div class="flex items-center group">
+                  <div class="w-6 h-6 bg-blue-100 rounded-sm mr-3 transition-all duration-200 group-hover:scale-110"></div>
+                  <div class="flex-1">
+                    <div class="text-xs font-mono text-gray-600">$space-xs</div>
+                    <div class="text-xs font-mono font-semibold">1rem (16px)</div>
+                  </div>
+    
+                </div>
+                <div class="flex items-center group">
+                  <div class="w-8 h-8 bg-blue-200 rounded-sm mr-3 transition-all duration-200 group-hover:scale-110"></div>
+                  <div class="flex-1">
+                    <div class="text-xs font-mono text-gray-600">$space-sm</div>
+                    <div class="text-xs font-mono font-semibold">1.5rem (24px)</div>
+                  </div>
+                </div>
+                <div class="flex items-center group">
+                  <div class="w-10 h-10 bg-blue-300 rounded-sm mr-3 transition-all duration-200 group-hover:scale-110"></div>
+                  <div class="flex-1">
+                    <div class="text-xs font-mono text-gray-600">$space-md</div>
+                    <div class="text-xs font-mono font-semibold">2rem (32px)</div>
+                  </div>
+                </div>
+                <div class="flex items-center group">
+                  <div class="w-12 h-12 bg-blue-400 rounded-sm mr-3 transition-all duration-200 group-hover:scale-110"></div>
+                  <div class="flex-1">
+                    <div class="text-xs font-mono text-gray-600">$space-lg</div>
+                    <div class="text-xs font-mono font-semibold">3rem (48px)</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Enhanced Shadows -->
+            <div class="bg-gray-50 p-3 rounded-lg">
+              <h4 class="text-sm font-medium text-gray-700 mb-3 flex items-center justify-between">
+                <span>Shadows</span>
+                <span class="text-xs font-mono bg-gray-200 px-2 py-1 rounded">shadows.scss</span>
+              </h4>
+              <div class="space-y-4">
+                <div class="p-3 bg-white shadow-xs rounded-sm text-xs flex justify-between items-center group">
+                  <span>Extra Small</span>
+                  <code class="text-xs font-mono opacity-0 group-hover:opacity-100 transition">shadow-xs</code>
+                </div>
+                <div class="p-3 bg-white shadow-sm rounded-sm text-xs flex justify-between items-center group">
+                  <span>Small</span>
+                  <code class="text-xs font-mono opacity-0 group-hover:opacity-100 transition">shadow-sm</code>
+                </div>
+                <div class="p-3 bg-white shadow rounded-sm text-xs flex justify-between items-center group">
+                  <span>Medium</span>
+                  <code class="text-xs font-mono opacity-0 group-hover:opacity-100 transition">shadow</code>
+                </div>
+                <div class="p-3 bg-white shadow-md rounded-sm text-xs flex justify-between items-center group">
+                  <span>Large</span>
+                  <code class="text-xs font-mono opacity-0 group-hover:opacity-100 transition">shadow-md</code>
+                </div>
+                <div class="p-3 bg-white shadow-lg rounded-sm text-xs flex justify-between items-center group">
+                  <span>Extra Large</span>
+                  <code class="text-xs font-mono opacity-0 group-hover:opacity-100 transition">shadow-lg</code>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Enhanced Border Radius -->
+            <div class="bg-gray-50 p-3 rounded-lg">
+              <h4 class="text-sm font-medium text-gray-700 mb-3 flex items-center justify-between">
+                <span>Border Radius</span>
+                <span class="text-xs font-mono bg-gray-200 px-2 py-1 rounded">borders.scss</span>
+              </h4>
+              <div class="space-y-4">
+                <div class="flex items-center justify-between group">
+                  <div class="flex items-center">
+                    <div class="w-8 h-8 bg-gray-100 rounded-none border border-gray-300 mr-3 flex items-center justify-center text-xs">0</div>
+                    <span class="text-xs font-mono">0px</span>
+                  </div>
+                  <code class="text-xs font-mono opacity-0 group-hover:opacity-100 transition">rounded-none</code>
+                </div>
+                <div class="flex items-center justify-between group">
+                  <div class="flex items-center">
+                    <div class="w-8 h-8 bg-gray-100 rounded-sm border border-gray-300 mr-3 flex items-center justify-center text-xs">1</div>
+                    <span class="text-xs font-mono">0.125rem</span>
+                  </div>
+                  <code class="text-xs font-mono opacity-0 group-hover:opacity-100 transition">rounded-sm</code>
+                </div>
+                <div class="flex items-center justify-between group">
+                  <div class="flex items-center">
+                    <div class="w-8 h-8 bg-gray-100 rounded-md border border-gray-300 mr-3 flex items-center justify-center text-xs">2</div>
+                    <span class="text-xs font-mono">0.25rem</span>
+                  </div>
+                  <code class="text-xs font-mono opacity-0 group-hover:opacity-100 transition">rounded-md</code>
+                </div>
+                <div class="flex items-center justify-between group">
+                  <div class="flex items-center">
+                    <div class="w-8 h-8 bg-gray-100 rounded-lg border border-gray-300 mr-3 flex items-center justify-center text-xs">3</div>
+                    <span class="text-xs font-mono">0.5rem</span>
+                  </div>
+                  <code class="text-xs font-mono opacity-0 group-hover:opacity-100 transition">rounded-lg</code>
+                </div>
+                <div class="flex items-center justify-between group">
+                  <div class="flex items-center">
+                    <div class="w-8 h-8 bg-gray-100 rounded-full border border-gray-300 mr-3 flex items-center justify-center text-xs">∞</div>
+                    <span class="text-xs font-mono">9999px</span>
+                  </div>
+                  <code class="text-xs font-mono opacity-0 group-hover:opacity-100 transition">rounded-full</code>
+                </div>
+              </div>
+            </div>
+            
+            <!-- New: Color Palette -->
+            <div class="bg-gray-50 p-3 rounded-lg">
+              <h4 class="text-sm font-medium text-gray-700 mb-3 flex items-center justify-between">
+                <span>Primary Colors</span>
+                <span class="text-xs font-mono bg-gray-200 px-2 py-1 rounded">colors.scss</span>
+              </h4>
+              <div class="grid grid-cols-5 gap-2">
+                <div class="flex flex-col items-center group">
+                  <div class="w-8 h-8 bg-blue-50 rounded-full mb-1"></div>
+                  <span class="text-xxs font-mono">50</span>
+                </div>
+                <div class="flex flex-col items-center group">
+                  <div class="w-8 h-8 bg-blue-100 rounded-full mb-1"></div>
+                  <span class="text-xxs font-mono">100</span>
+                </div>
+                <div class="flex flex-col items-center group">
+                  <div class="w-8 h-8 bg-blue-200 rounded-full mb-1"></div>
+                  <span class="text-xxs font-mono">200</span>
+                </div>
+                <div class="flex flex-col items-center group">
+                  <div class="w-8 h-8 bg-blue-300 rounded-full mb-1"></div>
+                  <span class="text-xxs font-mono">300</span>
+                </div>
+                <div class="flex flex-col items-center group">
+                  <div class="w-8 h-8 bg-blue-400 rounded-full mb-1"></div>
+                  <span class="text-xxs font-mono">400</span>
+                </div>
+              </div>
+            </div>
+            
+            <!-- New: Typography Scale -->
+            <div class="bg-gray-50 p-3 rounded-lg">
+              <h4 class="text-sm font-medium text-gray-700 mb-3 flex items-center justify-between">
+                <span>Typography</span>
+                <span class="text-xs font-mono bg-gray-200 px-2 py-1 rounded">typography.scss</span>
+              </h4>
+              <div class="space-y-3">
+                <div class="group">
+                  <h5 class="text-xs font-mono text-gray-500 mb-1">text-xs</h5>
+                  <p class="text-xs group-hover:text-blue-600 transition">The quick brown fox jumps over the lazy dog</p>
+                </div>
+                <div class="group">
+                  <h5 class="text-xs font-mono text-gray-500 mb-1">text-sm</h5>
+                  <p class="text-sm group-hover:text-blue-600 transition">The quick brown fox jumps over the lazy dog</p>
+                </div>
+                <div class="group">
+                  <h5 class="text-xs font-mono text-gray-500 mb-1">text-base</h5>
+                  <p class="text-base group-hover:text-blue-600 transition">The quick brown fox jumps over the lazy dog</p>
+                </div>
+                <div class="group">
+                  <h5 class="text-xs font-mono text-gray-500 mb-1">text-lg</h5>
+                  <p class="text-lg group-hover:text-blue-600 transition">The quick brown fox jumps over the lazy dog</p>
+                </div>
+              </div>
+            </div>
+            
+            <!-- New: Opacity Scale -->
+            <div class="bg-gray-50 p-3 rounded-lg">
+              <h4 class="text-sm font-medium text-gray-700 mb-3 flex items-center justify-between">
+                <span>Opacity</span>
+                <span class="text-xs font-mono bg-gray-200 px-2 py-1 rounded">opacity.scss</span>
+              </h4>
+              <div class="space-y-3">
+                <div class="flex items-center justify-between">
+                  <div class="w-8 h-8 bg-blue-500 opacity-100"></div>
+                  <span class="text-xs font-mono">opacity-100</span>
+                </div>
+                <div class="flex items-center justify-between">
+                  <div class="w-8 h-8 bg-blue-500 opacity-75"></div>
+                  <span class="text-xs font-mono">opacity-75</span>
+                </div>
+                <div class="flex items-center justify-between">
+                  <div class="w-8 h-8 bg-blue-500 opacity-50"></div>
+                  <span class="text-xs font-mono">opacity-50</span>
+                </div>
+                <div class="flex items-center justify-between">
+                  <div class="w-8 h-8 bg-blue-500 opacity-25"></div>
+                  <span class="text-xs font-mono">opacity-25</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Footer with usage stats -->
+        <div class="p-3 bg-gray-50 border-t border-gray-200 text-xs text-gray-500 flex justify-between">
+          <span>Made with love</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Color Studio
+  const colorPalette = document.getElementById('color-palette');
+  const colorPicker = document.getElementById('color-picker');
+  const currentColorHex = document.getElementById('current-color-hex');
+  const copyHexBtn = document.getElementById('copy-hex');
+  const rgbValue = document.getElementById('rgb-value');
+  const hslValue = document.getElementById('hsl-value');
+  const cmykValue = document.getElementById('cmyk-value');
+  const randomPaletteBtn = document.getElementById('random-palette');
+  const exportPaletteBtn = document.getElementById('export-palette');
+
+  // Typography Lab
+  const fontFamily = document.getElementById('font-family');
+  const fontSize = document.getElementById('font-size');
+  const fontSizeValue = document.getElementById('font-size-value');
+  const lineHeight = document.getElementById('line-height');
+  const lineHeightValue = document.getElementById('line-height-value');
+  const fontWeight = document.getElementById('font-weight');
+  const typographyPreview = document.getElementById('typography-preview');
+  const copyFontCssBtn = document.getElementById('copy-font-css');
+
+  // Gradient Master
+  const gradientPreview = document.getElementById('gradient-preview');
+  const gradientStart = document.getElementById('gradient-start');
+  const gradientEnd = document.getElementById('gradient-end');
+  const gradientStartHex = document.getElementById('gradient-start-hex');
+  const gradientEndHex = document.getElementById('gradient-end-hex');
+  const gradientAngle = document.getElementById('gradient-angle');
+  const gradientAngleValue = document.getElementById('gradient-angle-value');
+  const gradientRandomBtn = document.getElementById('gradient-random');
+  const gradientCopyBtn = document.getElementById('gradient-copy');
+
+  // Initialize color palette
+  function initColorPalette() {
+    const palette = [
+      '#3b82f6', '#6366f1', '#8b5cf6', '#ec4899', '#f43f5e',
+      '#ef4444', '#f97316', '#f59e0b', '#10b981', '#10b981'
+    ];
+    
+    palette.forEach(color => {
+      const colorEl = document.createElement('div');
+      colorEl.className = 'aspect-square rounded-md cursor-pointer hover:shadow-md transition-shadow';
+      colorEl.style.backgroundColor = color;
+      colorEl.addEventListener('click', () => {
+        colorPicker.value = color;
+        updateColorInfo(color);
+      });
+      colorPalette.appendChild(colorEl);
+    });
+  }
+
+  // Update color information
+  function updateColorInfo(hex) {
+    currentColorHex.textContent = hex;
+    
+    // Convert hex to RGB
+    const r = parseInt(hex.slice(1, 3), 16);
+    const g = parseInt(hex.slice(3, 5), 16);
+    const b = parseInt(hex.slice(5, 7), 16);
+    rgbValue.textContent = `${r}, ${g}, ${b}`;
+    
+    // Convert RGB to HSL
+    const hsl = rgbToHsl(r, g, b);
+    hslValue.textContent = `${Math.round(hsl[0])}°, ${Math.round(hsl[1])}%, ${Math.round(hsl[2])}%`;
+    
+    // Convert RGB to CMYK
+    const cmyk = rgbToCmyk(r, g, b);
+    cmykValue.textContent = `${Math.round(cmyk[0])}, ${Math.round(cmyk[1])}, ${Math.round(cmyk[2])}, ${Math.round(cmyk[3])}`;
+  }
+
+  // RGB to HSL conversion
+  function rgbToHsl(r, g, b) {
+    r /= 255, g /= 255, b /= 255;
+    const max = Math.max(r, g, b), min = Math.min(r, g, b);
+    let h, s, l = (max + min) / 2;
+
+    if (max === min) {
+      h = s = 0;
+    } else {
+      const d = max - min;
+      s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+      switch(max) {
+        case r: h = (g - b) / d + (g < b ? 6 : 0); break;
+        case g: h = (b - r) / d + 2; break;
+        case b: h = (r - g) / d + 4; break;
+      }
+      h /= 6;
+    }
+
+    return [h * 360, s * 100, l * 100];
+  }
+
+  // RGB to CMYK conversion
+  function rgbToCmyk(r, g, b) {
+    let c = 1 - (r / 255);
+    let m = 1 - (g / 255);
+    let y = 1 - (b / 255);
+    let k = Math.min(c, m, y);
+    
+    c = (c - k) / (1 - k) * 100;
+    m = (m - k) / (1 - k) * 100;
+    y = (y - k) / (1 - k) * 100;
+    k = k * 100;
+    
+    return [c || 0, m || 0, y || 0, k || 0];
+  }
+
+  // Random color generator
+  function getRandomColor() {
+    return `#${Math.floor(Math.random()*16777215).toString(16).padStart(6, '0')}`;
+  }
+
+  // Update typography preview
+  function updateTypographyPreview() {
+    const family = fontFamily.value;
+    const size = fontSize.value + 'px';
+    const weight = fontWeight.value;
+    const lineH = lineHeight.value;
+    
+    // Dynamically load Google Font if needed
+    if (family === 'poppins' || family === 'playfair') {
+      const font = family === 'poppins' ? 'Poppins' : 'Playfair+Display';
+      const link = document.createElement('link');
+      link.href = `https://fonts.googleapis.com/css2?family=${font}:wght@${weight}&display=swap`;
+      link.rel = 'stylesheet';
+      document.head.appendChild(link);
+      
+      typographyPreview.style.fontFamily = `'${family === 'poppins' ? 'Poppins' : 'Playfair Display'}', sans-serif`;
+    } else {
+      typographyPreview.style.fontFamily = {
+        inter: 'Inter, system-ui, sans-serif',
+        georgia: 'Georgia, serif',
+        courier: 'Courier, monospace'
+      }[family];
+    }
+    
+    typographyPreview.style.fontSize = size;
+    typographyPreview.style.fontWeight = weight;
+    typographyPreview.style.lineHeight = lineH;
+  }
+
+  // Update gradient preview
+  function updateGradient() {
+    const angle = gradientAngle.value;
+    const start = gradientStart.value;
+    const end = gradientEnd.value;
+    
+    gradientPreview.style.background = `linear-gradient(${angle}deg, ${start}, ${end})`;
+    gradientStartHex.value = start;
+    gradientEndHex.value = end;
+    gradientAngleValue.textContent = `${angle}°`;
+  }
+
+  // Copy to clipboard
+  function copyToClipboard(text) {
+    navigator.clipboard.writeText(text).then(() => {
+      showToast('Copied to clipboard!');
+    }).catch(err => {
+      showToast('Failed to copy', 'error');
+    });
+  }
+
+  // Show toast notification
+  function showToast(message, type = 'success') {
+    const toast = document.createElement('div');
+    toast.className = `fixed bottom-4 right-4 px-4 py-2 rounded-md shadow-lg text-sm font-medium ${
+      type === 'error' ? 'bg-red-100 text-red-800' : 'bg-green-100 text-green-800'
+    }`;
+    toast.textContent = message;
+    document.body.appendChild(toast);
+    
+    setTimeout(() => {
+      toast.remove();
+    }, 3000);
+  }
+
+  // Event listeners
+  colorPicker.addEventListener('input', (e) => {
+    updateColorInfo(e.target.value);
+  });
+
+  copyHexBtn.addEventListener('click', () => {
+    copyToClipboard(currentColorHex.textContent);
+  });
+
+  randomPaletteBtn.addEventListener('click', () => {
+    Array.from(colorPalette.children).forEach(el => {
+      const color = getRandomColor();
+      el.style.backgroundColor = color;
+    });
+  });
+
+  exportPaletteBtn.addEventListener('click', () => {
+    const palette = Array.from(colorPalette.children).map(el => el.style.backgroundColor);
+    copyToClipboard(JSON.stringify(palette, null, 2));
+  });
+
+  // Typography events
+  fontFamily.addEventListener('change', updateTypographyPreview);
+  fontSize.addEventListener('input', () => {
+    fontSizeValue.textContent = `${fontSize.value}px`;
+    updateTypographyPreview();
+  });
+  lineHeight.addEventListener('input', () => {
+    lineHeightValue.textContent = lineHeight.value;
+    updateTypographyPreview();
+  });
+  fontWeight.addEventListener('change', updateTypographyPreview);
+
+  copyFontCssBtn.addEventListener('click', () => {
+    const family = typographyPreview.style.fontFamily;
+    const size = typographyPreview.style.fontSize;
+    const weight = typographyPreview.style.fontWeight;
+    const lineH = typographyPreview.style.lineHeight;
+    
+    const css = `font-family: ${family};\nfont-size: ${size};\nfont-weight: ${weight};\nline-height: ${lineH};`;
+    copyToClipboard(css);
+  });
+
+  // Gradient events
+  gradientStart.addEventListener('input', (e) => {
+    gradientStartHex.value = e.target.value;
+    updateGradient();
+  });
+
+  gradientEnd.addEventListener('input', (e) => {
+    gradientEndHex.value = e.target.value;
+    updateGradient();
+  });
+
+  gradientStartHex.addEventListener('change', (e) => {
+    if (/^#[0-9A-F]{6}$/i.test(e.target.value)) {
+      gradientStart.value = e.target.value;
+      updateGradient();
+    }
+  });
+
+  gradientEndHex.addEventListener('change', (e) => {
+    if (/^#[0-9A-F]{6}$/i.test(e.target.value)) {
+      gradientEnd.value = e.target.value;
+      updateGradient();
+    }
+  });
+
+  gradientAngle.addEventListener('input', updateGradient);
+
+  gradientRandomBtn.addEventListener('click', () => {
+    gradientStart.value = getRandomColor();
+    gradientEnd.value = getRandomColor();
+    gradientAngle.value = Math.floor(Math.random() * 360);
+    updateGradient();
+  });
+
+  gradientCopyBtn.addEventListener('click', () => {
+    const css = `background: linear-gradient(${gradientAngle.value}deg, ${gradientStart.value}, ${gradientEnd.value});`;
+    copyToClipboard(css);
+  });
+
+  // Initialize
+  initColorPalette();
+  updateColorInfo(colorPicker.value);
+  updateTypographyPreview();
+  updateGradient();
+});
+</script>
+
+
+
+
+    <footer class="bg-gray-100 text-gray-600 border-t border-gray-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+<div class="grid grid-cols-2 md:grid-cols-5 gap-8">
+    <div class="col-span-2">
+        <a href="#" class="flex items-center space-x-2 mb-6">
+            <img src="images/logo.svg" alt="Forge Logo" class="h-8 w-auto">
+            <span class="text-xl font-medium text-gray-900">Forge by Blacnova</span>
+        </a>
+        <p class="text-sm mb-6">
+            The complete open-source toolkit for creators, students, and professionals.
+        </p>
+        <div class="flex space-x-4">
+            <a href="https://x.com/forgebyblacnova" class="text-gray-500 hover:text-forge-600 transition-colors">
+                <span class="sr-only">Twitter</span>
+                <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84" />
+                </svg>
+            </a>
+            <a href="https://www.facebook.com/profile.php?id=61564521771890" class="text-gray-500 hover:text-forge-600 transition-colors">
+                <span class="sr-only">Facebook</span>
+                <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
+                    <path fill-rule="evenodd" d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" clip-rule="evenodd" />
+                </svg>
+            </a>
+            <a href="https://www.instagram.com/forgebyblacnova/" class="text-gray-500 hover:text-forge-600 transition-colors">
+                <span class="sr-only">Instagram</span>
+                <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
+                    <path fill-rule="evenodd" d="M12.315 2c2.43 0 2.784.013 3.808.06 1.064.049 1.791.218 2.427.465a4.902 4.902 0 011.772 1.153 4.902 4.902 0 011.153 1.772c.247.636.416 1.363.465 2.427.048 1.067.06 1.407.06 4.123v.08c0 2.643-.012 2.987-.06 4.043-.049 1.064-.218 1.791-.465 2.427a4.902 4.902 0 01-1.153 1.772 4.902 4.902 0 01-1.772 1.153c-.636.247-1.363.416-2.427.465-1.067.048-1.407.06-4.123.06h-.08c-2.643 0-2.987-.012-4.043-.06-1.064-.049-1.791-.218-2.427-.465a4.902 4.902 0 01-1.772-1.153 4.902 4.902 0 01-1.153-1.772c-.247-.636-.416-1.363-.465-2.427-.047-1.024-.06-1.379-.06-3.808v-.63c0-2.43.013-2.784.06-3.808.049-1.064.218-1.791.465-2.427a4.902 4.902 0 011.153-1.772A4.902 4.902 0 015.45 2.525c.636-.247 1.363-.416 2.427-.465C8.901 2.013 9.256 2 11.685 2h.63zm-.081 1.802h-.468c-2.456 0-2.784.011-3.807.058-.975.045-1.504.207-1.857.344-.467.182-.8.398-1.15.748-.35.35-.566.683-.748 1.15-.137.353-.3.882-.344 1.857-.047 1.023-.058 1.351-.058 3.807v.468c0 2.456.011 2.784.058 3.807.045.975.207 1.504.344 1.857.182.466.399.8.748 1.15.35.35.683.566 1.15.748.353.137.882.3 1.857.344 1.054.048 1.37.058 4.041.058h.08c2.597 0 2.917-.01 3.96-.058.976-.045 1.505-.207 1.858-.344.466-.182.8-.398 1.15-.748.35-.35.566-.683.748-1.15.137-.353.3-.882.344-1.857.048-1.055.058-1.37.058-4.041v-.08c0-2.597-.01-2.917-.058-3.96-.045-.976-.207-1.505-.344-1.858a3.097 3.097 0 00-.748-1.15 3.098 3.098 0 00-1.15-.748c-.353-.137-.882-.3-1.857-.344-1.023-.047-1.351-.058-3.807-.058zM12 6.865a5.135 5.135 0 110 10.27 5.135 5.135 0 010-10.27zm0 1.802a3.333 3.333 0 100 6.666 3.333 3.333 0 000-6.666zm5.338-3.205a1.2 1.2 0 110 2.4 1.2 1.2 0 010-2.4z" clip-rule="evenodd" />
+                </svg>
+            </a>
+        </div>
+    </div>
+                <div>
+                    <h3 class="text-sm font-semibold text-gray-900 tracking-wider uppercase mb-4">Explore</h3>
+                    <ul class="space-y-3">
+                        <li><a href="index.html#features" class="text-sm hover:text-forge-600 transition-colors">Features</a></li>
+                        <li><a href="index.html#tools" class="text-sm hover:text-forge-600 transition-colors">Tools</a></li>
+                        <li><a href="index.html#pricing" class="text-sm hover:text-forge-600 transition-colors">Pricing</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3 class="text-sm font-semibold text-gray-900 tracking-wider uppercase mb-4">Company</h3>
+                    <ul class="space-y-3">
+                        <li><a href="about.html" class="text-sm hover:text-forge-600 transition-colors">About</a></li>
+                        <li><a href="contact.html" class="text-sm hover:text-forge-600 transition-colors">Contact</a></li>
+                        <li><a href="index.html#faq" class="text-sm hover:text-forge-600 transition-colors">FAQ</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-sm font-semibold text-gray-900 tracking-wider uppercase mb-4">Legal</h3>
+                    <ul class="space-y-3">
+                        <li><a href="policy.html" class="text-sm hover:text-forge-600 transition-colors">Privacy</a></li>
+                        <li><a href="policy.html#legal" class="text-sm hover:text-forge-600 transition-colors">Terms</a></li>
+                        <li><a href="policy.html#cookies" class="text-sm hover:text-forge-600 transition-colors">Cookies</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="mt-12 pt-8 border-t border-gray-200 flex flex-col md:flex-row justify-between items-center">
+                <p class="text-sm">
+                    &copy; 2025 Forge by Blacnova. All rights reserved.
+                </p>
+
+            </div>
+        </div>
+         <!-- Support Us Section -->
+      <div class="bg-forge-600 mt-6 text-white text-center py-4 px-4">
+        <p class="text-sm">
+          We don’t rely on ads to keep running. If you love Forge, consider 
+          <a href="https://buymeacoffee.com/galore" class="underline hover:text-gray-200 transition-colors">supporting us</a>.
+        </p>
+      </div>
+    </footer>
+</body>
+</html>

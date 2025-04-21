@@ -1,0 +1,1317 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forge - Digital Tool Suite</title>
+    <meta name="description" content="Free, open-source digital tools for students, creators, business owners, and employees. A comprehensive suite to boost your productivity.">
+    
+    <!-- SEO Meta Tags -->
+    <meta name="keywords" content="Forge, productivity tools, digital tools, toolkit, creative tools, task manager, browser extensions, Blacnova, creators tools, no fluff apps">
+    <meta name="author" content="Nicholas Xander Davis, Blacnova Development">
+    <meta name="robots" content="index, follow">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Forge - Built for Makers, by Makers Who Get It">
+    <meta property="og:description" content="No bloat. No distractions. Just digital tools that work. Built by creators who use them every day.">
+    <meta property="og:image" content="./images/forge.png">
+    <meta property="og:url" content="https://www.forgebyblacnova.net/index.html">
+    <meta property="og:site_name" content="Forge by Blacnova">
+
+    <!-- Twitter Meta -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Forge - Built for Makers, by Makers Who Get It">
+    <meta name="twitter:description" content="A clean, focused toolkit made for creators. No fluff, just features that work.">
+    <meta name="twitter:image" content="./images/forge.png">
+    <meta name="twitter:creator" content="@forgebyblacnova">
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="images/forge.png" type="image/png">
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        forge: {
+                            50: '#fff7ed',
+                            100: '#ffedd5',
+                            200: '#fed7aa',
+                            300: '#fdba74',
+                            400: '#fb923c',
+                            500: '#f97316',
+                            600: '#ea580c',
+                            700: '#c2410c',
+                            800: '#9a3412',
+                            900: '#7c2d12',
+                        },
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 0.5s ease-in forwards',
+                        'fade-in-up': 'fadeInUp 0.6s ease-out forwards',
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: '0' },
+                            '100%': { opacity: '1' },
+                        },
+                        fadeInUp: {
+                            '0%': { opacity: '0', transform: 'translateY(20px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        },
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+
+<style>
+        .gradient-text {
+            background: linear-gradient(90deg, #f97316, #ea580c);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        .gradient-bg {
+            background: linear-gradient(135deg, #f97316, #ea580c);
+        }
+        .tool-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(249, 115, 22, 0.2), 0 10px 10px -5px rgba(249, 115, 22, 0.1);
+        }
+        .tool-card {
+            transition: all 0.3s ease;
+        }
+        .animate-delay-100 {
+            animation-delay: 0.1s;
+        }
+        .animate-delay-200 {
+            animation-delay: 0.2s;
+        }
+        .animate-delay-300 {
+            animation-delay: 0.3s;
+        }
+        .animate-delay-400 {
+            animation-delay: 0.4s;
+        }
+        .animate-delay-500 {
+            animation-delay: 0.5s;
+        }
+        .header-blur {
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+    </style>
+<body class="bg-white font-sans text-gray-800 antialiased">
+
+<nav class="fixed w-full bg-white/80 header-blur shadow-sm z-50 border-b border-gray-100">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between h-16 items-center">
+            <div class="flex items-center">
+                <a href="index.html" class="flex items-center space-x-2">
+                    <img src="images/logo.svg" alt="Forge Logo" class="h-8 w-auto">
+                    <span class="text-xl font-medium text-gray-900">Forge by Blacnova</span>
+                </a>
+            </div>
+            <div class="hidden md:flex items-center space-x-8">
+                <a href="index.html#features" class="text-gray-600 hover:text-forge-600 transition-colors font-medium">Features</a>
+                
+                <!-- Tools Dropdown -->
+                <div class="relative group" x-data="{ open: false, activeCategory: 'productivity' }" @mouseenter="open = true" @mouseleave="open = false">
+                    <button class="text-gray-600 hover:text-forge-600 transition-colors font-medium flex items-center">
+                        Tools
+                        <svg class="w-4 h-4 ml-1 transition-transform duration-200" :class="{ 'rotate-180': open }" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </button>
+                    
+                    <!-- Dropdown Panel -->
+                    <div x-show="open" x-transition:enter="transition ease-out duration-200" 
+                         x-transition:enter-start="opacity-0 translate-y-1" 
+                         x-transition:enter-end="opacity-100 translate-y-0" 
+                         x-transition:leave="transition ease-in duration-150" 
+                         x-transition:leave-start="opacity-100 translate-y-0" 
+                         x-transition:leave-end="opacity-0 translate-y-1"
+                         class="absolute left-0 mt-2 w-[600px] bg-white rounded-lg shadow-xl border border-gray-200 overflow-hidden z-50"
+                         @mouseenter="open = true" @mouseleave="open = false">
+                        <div class="grid grid-cols-3">
+                            <!-- Categories Column -->
+                            <div class="col-span-1 bg-gray-50 p-4">
+                                <h3 class="font-medium text-gray-900 mb-3">Categories</h3>
+                                <ul class="space-y-2">
+                                    <li>
+                                        <button @mouseenter="activeCategory = 'productivity'" 
+                                                :class="{ 'text-forge-600 bg-white shadow-sm': activeCategory === 'productivity', 'text-gray-700': activeCategory !== 'productivity' }"
+                                                class="w-full text-left px-3 py-2 rounded-md font-medium hover:bg-gray-100 transition-colors">
+                                            Productivity
+                                        </button>
+                                    </li>
+                                    <li>
+                                        <button @mouseenter="activeCategory = 'devtools'" 
+                                                :class="{ 'text-forge-600 bg-white shadow-sm': activeCategory === 'devtools', 'text-gray-700': activeCategory !== 'devtools' }"
+                                                class="w-full text-left px-3 py-2 rounded-md font-medium hover:bg-gray-100 transition-colors">
+                                            Dev Tools
+                                        </button>
+                                    </li>
+                                    <li>
+                                        <button @mouseenter="activeCategory = 'filetools'" 
+                                                :class="{ 'text-forge-600 bg-white shadow-sm': activeCategory === 'filetools', 'text-gray-700': activeCategory !== 'filetools' }"
+                                                class="w-full text-left px-3 py-2 rounded-md font-medium hover:bg-gray-100 transition-colors">
+                                            File Tools
+                                        </button>
+                                    </li>
+                                    <li>
+                                        <button @mouseenter="activeCategory = 'generators'" 
+                                                :class="{ 'text-forge-600 bg-white shadow-sm': activeCategory === 'generators', 'text-gray-700': activeCategory !== 'generators' }"
+                                                class="w-full text-left px-3 py-2 rounded-md font-medium hover:bg-gray-100 transition-colors">
+                                            Generators
+                                        </button>
+                                    </li>
+                                    <li>
+                                        <button @mouseenter="activeCategory = 'writing'" 
+                                                :class="{ 'text-forge-600 bg-white shadow-sm': activeCategory === 'writing', 'text-gray-700': activeCategory !== 'writing' }"
+                                                class="w-full text-left px-3 py-2 rounded-md font-medium hover:bg-gray-100 transition-colors">
+                                            Writing
+                                        </button>
+                                    </li>
+                                    <li>
+                                        <button @mouseenter="activeCategory = 'converters'" 
+                                                :class="{ 'text-forge-600 bg-white shadow-sm': activeCategory === 'converters', 'text-gray-700': activeCategory !== 'converters' }"
+                                                class="w-full text-left px-3 py-2 rounded-md font-medium hover:bg-gray-100 transition-colors">
+                                            Converters
+                                        </button>
+                                    </li>
+                                </ul>
+                            </div>
+                            
+                            <!-- Tools Column -->
+                            <div class="col-span-2 p-4">
+                                <!-- Productivity Tools -->
+                                <div x-show="activeCategory === 'productivity'" class="space-y-3">
+                                    <h4 class="font-medium text-gray-900 mb-2">Productivity Tools</h4>
+                                    <a href="./tasks.html" class="block px-3 py-2 rounded-md hover:bg-gray-50 transition-colors">
+                                        <p class="font-medium">Task Manager</p>
+                                        <p class="text-sm text-gray-500">Organize your tasks and to-dos</p>
+                                    </a>
+                                    <a href="./calander.html" class="block px-3 py-2 rounded-md hover:bg-gray-50 transition-colors">
+                                        <p class="font-medium">Calendar</p>
+                                        <p class="text-sm text-gray-500">Manage your schedule and events</p>
+                                    </a>
+                                    <a href="./qrcode.html" class="block px-3 py-2 rounded-md hover:bg-gray-50 transition-colors">
+                                        <p class="font-medium">QR Code Generator</p>
+                                        <p class="text-sm text-gray-500">Create QR codes for any content</p>
+                                    </a>
+                                </div>
+                                
+                                <!-- Dev Tools -->
+                                <div x-show="activeCategory === 'devtools'" class="space-y-3" style="display: none;">
+                                    <h4 class="font-medium text-gray-900 mb-2">Developer Tools</h4>
+                                    <a href="./designer.html" class="block px-3 py-2 rounded-md hover:bg-gray-50 transition-colors">
+                                        <p class="font-medium">Designer</p>
+                                        <p class="text-sm text-gray-500">Create graphics and visual designs</p>
+                                    </a>
+                                    <a href="./playground.html" class="block px-3 py-2 rounded-md hover:bg-gray-50 transition-colors">
+                                        <p class="font-medium">Playground</p>
+                                        <p class="text-sm text-gray-500">Experiment with code snippets</p>
+                                    </a>
+                                </div>
+                                
+                                <!-- File Tools -->
+                                <div x-show="activeCategory === 'filetools'" class="space-y-3" style="display: none;">
+                                    <h4 class="font-medium text-gray-900 mb-2">File Tools</h4>
+                                    <a href="./filesplitter.html" class="block px-3 py-2 rounded-md hover:bg-gray-50 transition-colors">
+                                        <p class="font-medium">File Splitter</p>
+                                        <p class="text-sm text-gray-500">Split large files into smaller parts</p>
+                                    </a>
+                                    <a href="./compressor.html" class="block px-3 py-2 rounded-md hover:bg-gray-50 transition-colors">
+                                        <p class="font-medium">File Compressor</p>
+                                        <p class="text-sm text-gray-500">Reduce file sizes efficiently</p>
+                                    </a>
+                                </div>
+                                
+                                <!-- Generators -->
+                                <div x-show="activeCategory === 'generators'" class="space-y-3" style="display: none;">
+                                    <h4 class="font-medium text-gray-900 mb-2">Generators</h4>
+                                    <a href="./usernamegen.html" class="block px-3 py-2 rounded-md hover:bg-gray-50 transition-colors">
+                                        <p class="font-medium">Username Generator</p>
+                                        <p class="text-sm text-gray-500">Create unique usernames</p>
+                                    </a>
+                                    <a href="./colorgen.html" class="block px-3 py-2 rounded-md hover:bg-gray-50 transition-colors">
+                                        <p class="font-medium">Color Generator</p>
+                                        <p class="text-sm text-gray-500">Generate color palettes</p>
+                                    </a>
+                                    <a href="./namegen.html" class="block px-3 py-2 rounded-md hover:bg-gray-50 transition-colors">
+                                        <p class="font-medium">Name Generator</p>
+                                        <p class="text-sm text-gray-500">Generate random names</p>
+                                    </a>
+                                    <a href="./passwordgen.html" class="block px-3 py-2 rounded-md hover:bg-gray-50 transition-colors">
+                                        <p class="font-medium">Password Generator</p>
+                                        <p class="text-sm text-gray-500">Create secure passwords</p>
+                                    </a>
+                                    <a href="./numbergen.html" class="block px-3 py-2 rounded-md hover:bg-gray-50 transition-colors">
+                                        <p class="font-medium">Number Generator</p>
+                                        <p class="text-sm text-gray-500">Generate random numbers</p>
+                                    </a>
+                                </div>
+                                
+                                <!-- Writing Tools -->
+                                <div x-show="activeCategory === 'writing'" class="space-y-3" style="display: none;">
+                                    <h4 class="font-medium text-gray-900 mb-2">Writing Tools</h4>
+                                    <a href="./grammar.html" class="block px-3 py-2 rounded-md hover:bg-gray-50 transition-colors">
+                                        <p class="font-medium">Grammar Checker</p>
+                                        <p class="text-sm text-gray-500">Improve your writing quality</p>
+                                    </a>
+                                    <a href="./notes.html" class="block px-3 py-2 rounded-md hover:bg-gray-50 transition-colors">
+                                        <p class="font-medium">Notes</p>
+                                        <p class="text-sm text-gray-500">Capture and organize your thoughts</p>
+                                    </a>
+                                </div>
+                                
+                                <!-- Converters -->
+                                <div x-show="activeCategory === 'converters'" class="space-y-3" style="display: none;">
+                                    <h4 class="font-medium text-gray-900 mb-2">Converters</h4>
+                                    <a href="./timeconverter.html" class="block px-3 py-2 rounded-md hover:bg-gray-50 transition-colors">
+                                        <p class="font-medium">Time Converter</p>
+                                        <p class="text-sm text-gray-500">Convert between time zones</p>
+                                    </a>
+                                    <a href="./currencyconverter.html" class="block px-3 py-2 rounded-md hover:bg-gray-50 transition-colors">
+                                        <p class="font-medium">Currency Converter</p>
+                                        <p class="text-sm text-gray-500">Convert between currencies</p>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <a href="index.html#pricing" class="text-gray-600 hover:text-forge-600 transition-colors font-medium">Pricing</a>
+                <a href="index.html#faq" class="text-gray-600 hover:text-forge-600 transition-colors font-medium">FAQ</a>
+                <a href="contact.html" class="text-gray-600 hover:text-forge-600 transition-colors font-medium">Contact</a>
+            </div>
+            <div class="flex items-center">
+                <a href="download.html" class="hidden md:block px-4 py-2 rounded-lg bg-forge-600 text-white font-medium hover:bg-forge-700 transition-colors shadow-md">
+                    Our Extensions
+                </a>
+                <button id="mobile-menu-button" class="md:hidden text-gray-600 hover:text-forge-600 focus:outline-none">
+                    <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile menu -->
+    <div id="mobile-menu" class="md:hidden hidden bg-white border-t border-gray-200">
+        <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+            <a href="index.html#features" class="block px-3 py-2 rounded-md text-base font-medium text-gray-600 hover:text-forge-600 hover:bg-forge-50">Features</a>
+            <a href="index.html#tools" class="block px-3 py-2 rounded-md text-base font-medium text-gray-600 hover:text-forge-600 hover:bg-forge-50">Tools</a>
+            <a href="index.html#pricing" class="block px-3 py-2 rounded-md text-base font-medium text-gray-600 hover:text-forge-600 hover:bg-forge-50">Pricing</a>
+            <a href="index.html#faq" class="block px-3 py-2 rounded-md text-base font-medium text-gray-600 hover:text-forge-600 hover:bg-forge-50">FAQ</a>
+            <a href="contact.html" class="block px-3 py-2 rounded-md text-base font-medium text-gray-600 hover:text-forge-600 hover:bg-forge-50">Contact</a>
+            <a href="download.html" class="block px-3 py-2 rounded-md text-base font-medium text-white bg-forge-600 hover:bg-forge-700">Get Started</a>
+        </div>
+    </div>
+</nav>
+
+<script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+
+<!-- Updated JavaScript -->
+<script>
+    // Mobile menu toggle
+    const mobileMenuButton = document.getElementById('mobile-menu-button');
+    const mobileMenu = document.getElementById('mobile-menu');
+
+    mobileMenuButton.addEventListener('click', function() {
+        const isExpanded = mobileMenuButton.getAttribute('aria-expanded') === 'true';
+        mobileMenuButton.setAttribute('aria-expanded', !isExpanded);
+        mobileMenu.classList.toggle('hidden');
+        
+        // Toggle between menu and close icon
+        if (!isExpanded) {
+            mobileMenuButton.innerHTML = `
+                <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            `;
+        } else {
+            mobileMenuButton.innerHTML = `
+                <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+            `;
+        }
+    });
+
+    // Close mobile menu when clicking on a link
+    document.querySelectorAll('#mobile-menu a').forEach(link => {
+        link.addEventListener('click', () => {
+            mobileMenu.classList.add('hidden');
+            mobileMenuButton.setAttribute('aria-expanded', 'false');
+            mobileMenuButton.innerHTML = `
+                <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+            `;
+        });
+    });
+
+    // FAQ toggle functionality
+    document.querySelectorAll('.faq-toggle').forEach(button => {
+        button.addEventListener('click', () => {
+            const content = button.nextElementSibling;
+            const icon = button.querySelector('svg');
+            
+            // Toggle content visibility
+            content.classList.toggle('hidden');
+            
+            // Toggle icon rotation
+            icon.classList.toggle('rotate-180');
+            
+            // Close other open FAQs
+            document.querySelectorAll('.faq-toggle').forEach(otherButton => {
+                if (otherButton !== button) {
+                    otherButton.nextElementSibling.classList.add('hidden');
+                    otherButton.querySelector('svg').classList.remove('rotate-180');
+                }
+            });
+        });
+    });
+
+    // Smooth scrolling for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            const targetId = this.getAttribute('href');
+            if (targetId === '#') return;
+            
+            const targetElement = document.querySelector(targetId);
+            if (targetElement) {
+                targetElement.scrollIntoView({
+                    behavior: 'smooth'
+                });
+            }
+        });
+    });
+
+    // Animation on scroll
+    function animateOnScroll() {
+        const elements = document.querySelectorAll('.animate-fade-in-up');
+        
+        elements.forEach(element => {
+            const elementPosition = element.getBoundingClientRect().top;
+            const screenPosition = window.innerHeight / 1.2;
+            
+            if (elementPosition < screenPosition) {
+                element.style.opacity = '1';
+                element.style.transform = 'translateY(0)';
+            }
+        });
+    }
+
+    // Run once on page load
+    animateOnScroll();
+    
+    // Run on scroll
+    window.addEventListener('scroll', animateOnScroll);
+</script>
+
+    <!-- Hero Section - Mobile Optimized -->
+<section class="pt-20 pb-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center text-center md:text-left">
+        <div class="space-y-6">
+            <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight" style="padding-top: 10px;" class="sm:pt-0">
+                <span class="gradient-text">Forge</span> Your Digital Future
+            </h1>
+            <p class="text-lg sm:text-xl text-gray-600">
+                Forge isn’t just a toolkit. It’s a vision, crafted out of the frustrations and dreams of people who believe in better tools for brighter ideas.
+            </p>
+   <div class="flex flex-col sm:flex-row justify-center md:justify-start gap-4 pt-4">
+    <!-- Solid Gradient Button -->
+    <a href="download.html" class="px-6 py-3 rounded-lg gradient-bg text-white font-medium hover:opacity-90 transition-opacity shadow-lg hover:shadow-xl">
+        Our Extensions
+    </a>
+    <!-- Transparent Outline Button with same gradient color -->
+<a href="#tools" class="px-6 py-3 rounded-lg font-medium text-black bg-clip-text border-2 border-transparent hover:text-forge-500 transition-all gradient-border-rich-orange">
+        Our Tools
+    </a>
+</div>
+<style> 
+.gradient-border-rich-orange {
+  background-image: linear-gradient(#fff, #fff), linear-gradient(to right, #f76f14, #fca311);
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+  border: 2px solid transparent;
+}
+
+
+</style>
+        </div>
+        <div class="relative">
+            <img src="https://illustrations.popsy.co/amber/designer.svg" alt="Digital tools illustration" class="w-full h-auto max-w-xs sm:max-w-md mx-auto">
+        </div>
+    </div>
+</section>
+
+
+    <!-- Features Section - Inspired by Shopify -->
+    <section id="features" class="py-20 px-4 sm:px-6 lg:px-8 mx-auto bg-gray-50">
+    <div class="text-center mb-16">
+        <span class="inline-block px-3 py-1 text-sm font-medium rounded-full bg-forge-100 text-forge-800 mb-4">Features</span>
+        <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Why Forge Stands Out</h2>
+        <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+            A different approach to digital tools - open, flexible, and built for real work.
+        </p>
+    </div>
+    <div class="grid md:grid-cols-3 gap-8 max-w-[1000px] mx-auto">
+        <div class="bg-white p-8 rounded-xl shadow-sm hover:shadow-md transition-shadow border border-gray-100 animate-fade-in-up">
+            <div class="w-12 h-12 rounded-lg gradient-bg flex items-center justify-center mb-6">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-6 h-6 text-white">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                </svg>
+            </div>
+            <h3 class="text-xl font-semibold mb-3">Blazing Fast</h3>
+            <p class="text-gray-600">Optimized for performance with near-instant load times. No waiting, just creating.</p>
+        </div>
+        <div class="bg-white p-8 rounded-xl shadow-sm hover:shadow-md transition-shadow border border-gray-100 animate-fade-in-up animate-delay-100">
+            <div class="w-12 h-12 rounded-lg gradient-bg flex items-center justify-center mb-6">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-6 h-6 text-white">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                </svg>
+            </div>
+            <h3 class="text-xl font-semibold mb-3">Your Data, Always</h3>
+            <p class="text-gray-600">No tracking, no selling. We believe in complete data ownership and privacy.</p>
+        </div>
+<div class="bg-white p-8 rounded-xl shadow-sm hover:shadow-md transition-shadow border border-gray-100 animate-fade-in-up animate-delay-200">
+    <div class="w-12 h-12 rounded-lg gradient-bg flex items-center justify-center mb-6">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-6 h-6 text-white">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+        </svg>
+    </div>
+    <h3 class="text-xl font-semibold mb-3">Built to Empower</h3>
+    <p class="text-gray-600">Forge gives you powerful tools without the complexity.</p>
+</div>
+
+    </div>
+</section>
+
+
+<!-- Tools Section - Organized by Categories -->
+<section id="tools" class="py-20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16">
+            <span class="inline-block px-3 py-1 text-sm font-medium rounded-full bg-forge-100 text-forge-800 mb-4">Tools</span>
+            <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Digital Toolkit</h2>
+            <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+                Essential tools for productivity, creativity, and development.
+            </p>
+        </div>
+        
+        <!-- Productivity Tools -->
+        <div class="mb-12">
+            <h3 class="text-xl font-semibold mb-6 text-gray-800 border-b pb-2">Productivity</h3>
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Calendar -->
+                <a href="./calander.html" class="tool-card bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+                    <div class="flex items-center mb-4">
+                        <div class="w-10 h-10 rounded-lg bg-forge-100 flex items-center justify-center mr-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-5 h-5 text-forge-600">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                            </svg>
+                        </div>
+                        <h3 class="text-lg font-semibold">Calendar</h3>
+                    </div>
+                    <p class="text-gray-600 mb-4">Schedule and manage your time effectively with our calendar tool.</p>
+                </a>
+                
+                <!-- Tasks -->
+                <a href="./tasks.html" class="tool-card bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+                    <div class="flex items-center mb-4">
+                        <div class="w-10 h-10 rounded-lg bg-forge-100 flex items-center justify-center mr-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-5 h-5 text-forge-600">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                            </svg>
+                        </div>
+                        <h3 class="text-lg font-semibold">Task Manager</h3>
+                    </div>
+                    <p class="text-gray-600 mb-4">Organize and track your tasks and to-do lists efficiently.</p>
+                </a>
+                
+                <!-- QR Code -->
+                <a href="./qrcode.html" class="tool-card bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+                    <div class="flex items-center mb-4">
+                        <div class="w-10 h-10 rounded-lg bg-forge-100 flex items-center justify-center mr-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-5 h-5 text-forge-600">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z" />
+                            </svg>
+                        </div>
+                        <h3 class="text-lg font-semibold">QR Code Generator</h3>
+                    </div>
+                    <p class="text-gray-600 mb-4">Create custom QR codes for URLs, text, and contact information.</p>
+                </a>
+            </div>
+        </div>
+        
+        <!-- Generators -->
+        <div class="mb-12">
+            <h3 class="text-xl font-semibold mb-6 text-gray-800 border-b pb-2">Generators</h3>
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Username Generator -->
+                <a href="./usernamegen.html" class="tool-card bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+                    <div class="flex items-center mb-4">
+                        <div class="w-10 h-10 rounded-lg bg-forge-100 flex items-center justify-center mr-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-5 h-5 text-forge-600">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                            </svg>
+                        </div>
+                        <h3 class="text-lg font-semibold">Username Generator</h3>
+                    </div>
+                    <p class="text-gray-600 mb-4">Generate unique and creative usernames for your online accounts.</p>
+                </a>
+                
+                <!-- Password Generator -->
+                <a href="./passwordgen.html" class="tool-card bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+                    <div class="flex items-center mb-4">
+                        <div class="w-10 h-10 rounded-lg bg-forge-100 flex items-center justify-center mr-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-5 h-5 text-forge-600">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                            </svg>
+                        </div>
+                        <h3 class="text-lg font-semibold">Password Generator</h3>
+                    </div>
+                    <p class="text-gray-600 mb-4">Create strong, secure passwords for your online accounts.</p>
+                </a>
+                
+                <!-- Color Generator -->
+                <a href="./colorgen.html" class="tool-card bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+                    <div class="flex items-center mb-4">
+                        <div class="w-10 h-10 rounded-lg bg-forge-100 flex items-center justify-center mr-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-5 h-5 text-forge-600">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" />
+                            </svg>
+                        </div>
+                        <h3 class="text-lg font-semibold">Color Generator</h3>
+                    </div>
+                    <p class="text-gray-600 mb-4">Generate beautiful color palettes for your designs.</p>
+                </a>
+                
+                <!-- Name Generator -->
+                <a href="./namegen.html" class="tool-card bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+                    <div class="flex items-center mb-4">
+                        <div class="w-10 h-10 rounded-lg bg-forge-100 flex items-center justify-center mr-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-5 h-5 text-forge-600">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                            </svg>
+                        </div>
+                        <h3 class="text-lg font-semibold">Name Generator</h3>
+                    </div>
+                    <p class="text-gray-600 mb-4">Generate creative names for characters, projects, or businesses.</p>
+                </a>
+                
+                <!-- Number Generator -->
+                <a href="./numbergen.html" class="tool-card bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+                    <div class="flex items-center mb-4">
+                        <div class="w-10 h-10 rounded-lg bg-forge-100 flex items-center justify-center mr-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-5 h-5 text-forge-600">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                            </svg>
+                        </div>
+                        <h3 class="text-lg font-semibold">Number Generator</h3>
+                    </div>
+                    <p class="text-gray-600 mb-4">Generate random numbers for various purposes.</p>
+                </a>
+            </div>
+        </div>
+        
+        <!-- File Tools -->
+        <div class="mb-12">
+            <h3 class="text-xl font-semibold mb-6 text-gray-800 border-b pb-2">File Tools</h3>
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- File Splitter -->
+                <a href="./filesplitter.html" class="tool-card bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+                    <div class="flex items-center mb-4">
+                        <div class="w-10 h-10 rounded-lg bg-forge-100 flex items-center justify-center mr-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-5 h-5 text-forge-600">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 13h6m-3-3v6m-9 1V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z" />
+                            </svg>
+                        </div>
+                        <h3 class="text-lg font-semibold">File Splitter</h3>
+                    </div>
+                    <p class="text-gray-600 mb-4">Split large files into smaller, more manageable parts.</p>
+                </a>
+                
+                <!-- Compressor -->
+                <a href="./compressor.html" class="tool-card bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+                    <div class="flex items-center mb-4">
+                        <div class="w-10 h-10 rounded-lg bg-forge-100 flex items-center justify-center mr-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-5 h-5 text-forge-600">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                        </div>
+                        <h3 class="text-lg font-semibold">File Compressor</h3>
+                    </div>
+                    <p class="text-gray-600 mb-4">Reduce file sizes while maintaining quality.</p>
+                </a>
+            </div>
+        </div>
+        
+        <!-- Writing Tools -->
+        <div class="mb-12">
+            <h3 class="text-xl font-semibold mb-6 text-gray-800 border-b pb-2">Writing Tools</h3>
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Grammar Checker -->
+                <a href="./grammar.html" class="tool-card bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+                    <div class="flex items-center mb-4">
+                        <div class="w-10 h-10 rounded-lg bg-forge-100 flex items-center justify-center mr-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-5 h-5 text-forge-600">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                            </svg>
+                        </div>
+                        <h3 class="text-lg font-semibold">Grammar Checker</h3>
+                    </div>
+                    <p class="text-gray-600 mb-4">Improve your writing with our grammar and style checker.</p>
+                </a>
+                
+                <!-- Notes -->
+                <a href="./notes.html" class="tool-card bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+                    <div class="flex items-center mb-4">
+                        <div class="w-10 h-10 rounded-lg bg-forge-100 flex items-center justify-center mr-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-5 h-5 text-forge-600">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                            </svg>
+                        </div>
+                        <h3 class="text-lg font-semibold">Notes</h3>
+                    </div>
+                    <p class="text-gray-600 mb-4">Take and organize your notes with rich text formatting.</p>
+                </a>
+            </div>
+        </div>
+        
+        <!-- Converters -->
+        <div class="mb-12">
+            <h3 class="text-xl font-semibold mb-6 text-gray-800 border-b pb-2">Converters</h3>
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Time Converter -->
+                <a href="./timeconverter.html" class="tool-card bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+                    <div class="flex items-center mb-4">
+                        <div class="w-10 h-10 rounded-lg bg-forge-100 flex items-center justify-center mr-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-5 h-5 text-forge-600">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                        </div>
+                        <h3 class="text-lg font-semibold">Time Converter</h3>
+                    </div>
+                    <p class="text-gray-600 mb-4">Convert between different time zones and formats.</p>
+                </a>
+                
+                <!-- Currency Converter -->
+                <a href="./currencyconverter.html" class="tool-card bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+                    <div class="flex items-center mb-4">
+                        <div class="w-10 h-10 rounded-lg bg-forge-100 flex items-center justify-center mr-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-5 h-5 text-forge-600">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                        </div>
+                        <h3 class="text-lg font-semibold">Currency Converter</h3>
+                    </div>
+                    <p class="text-gray-600 mb-4">Convert between different currencies with up-to-date rates.</p>
+                </a>
+            </div>
+        </div>
+        
+        <!-- Dev Tools -->
+        <div class="mb-12">
+            <h3 class="text-xl font-semibold mb-6 text-gray-800 border-b pb-2">Developer Tools</h3>
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Designer -->
+                <a href="./designer.html" class="tool-card bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+                    <div class="flex items-center mb-4">
+                        <div class="w-10 h-10 rounded-lg bg-forge-100 flex items-center justify-center mr-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-5 h-5 text-forge-600">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+                            </svg>
+                        </div>
+                        <h3 class="text-lg font-semibold">Designer</h3>
+                    </div>
+                    <p class="text-gray-600 mb-4">Design and prototype your digital projects.</p>
+                </a>
+                
+                <!-- Playground -->
+                <a href="./playground.html" class="tool-card bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+                    <div class="flex items-center mb-4">
+                        <div class="w-10 h-10 rounded-lg bg-forge-100 flex items-center justify-center mr-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-5 h-5 text-forge-600">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+                            </svg>
+                        </div>
+                        <h3 class="text-lg font-semibold">Code Playground</h3>
+                    </div>
+                    <p class="text-gray-600 mb-4">Experiment with code in a sandbox environment.</p>
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Pricing Section - Inspired by Stripe -->
+<section id="pricing" class="py-20 px-4 sm:px-6 lg:px-8 mx-auto bg-gray-50">
+    <div class="text-center mb-16">
+        <span class="inline-block px-3 py-1 text-sm font-medium rounded-full bg-forge-100 text-forge-800 mb-4">Pricing</span>
+        <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Simple, Transparent Pricing</h2>
+        <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+            Start for free, upgrade as your needs grow. We believe in fair pricing with no hidden fees.
+        </p>
+    </div>
+    
+    <div class="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+        <!-- Basic Tier -->
+        <div class="bg-white p-8 rounded-xl shadow-sm border border-gray-200 animate-fade-in-up">
+            <div class="mb-6">
+                <h3 class="text-2xl font-semibold text-gray-900 mb-2">Basic</h3>
+                <p class="text-gray-600">Perfect for casual users</p>
+            </div>
+            <div class="mb-6">
+                <span class="text-4xl font-bold text-gray-900">$0</span>
+                <span class="text-gray-600">/forever</span>
+            </div>
+            <div class="space-y-4 mb-8">
+                <div class="flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-forge-600 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                    </svg>
+                    <span>Access to all core tools</span>
+                </div>
+                <div class="flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-forge-600 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                    </svg>
+                    <span>Single file processing</span>
+                </div>
+                <div class="flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-forge-600 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                    </svg>
+                    <span>Community support</span>
+                </div>
+                <div class="flex items-center text-gray-400">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
+                    </svg>
+                    <span class="line-through">Batch processing</span>
+                </div>
+                <div class="flex items-center text-gray-400">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
+                    </svg>
+                    <span class="line-through">Priority support</span>
+                </div>
+            </div>
+            <a href="#get-started" class="block w-full px-4 py-3 bg-gray-100 text-gray-800 font-medium rounded-lg text-center hover:bg-gray-200 transition-colors">
+                Get Started Free
+            </a>
+        </div>
+        
+        <!-- Plus Tier -->
+        <div class="bg-white p-8 rounded-xl shadow-sm border border-gray-200 relative animate-fade-in-up animate-delay-200">
+            <div class="absolute top-0 right-0 bg-gray-500 text-white text-xs font-bold px-3 py-1 rounded-bl-lg">
+                Coming Soon
+            </div>
+            <div class="mb-6">
+                <h3 class="text-2xl font-semibold text-gray-900 mb-2">Plus</h3>
+                <p class="text-gray-600">For power users</p>
+            </div>
+            <div class="mb-6">
+                <span class="text-4xl font-bold text-gray-900">$30</span>
+                <span class="text-gray-600">one-time</span>
+            </div>
+            <div class="space-y-4 mb-8">
+                <div class="flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-forge-600 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                    </svg>
+                    <span>Everything in Basic</span>
+                </div>
+                <div class="flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-forge-600 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                    </svg>
+                    <span>Priority support</span>
+                </div>
+                <div class="flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-forge-600 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                    </svg>
+                    <span>Ad-free experience</span>
+                </div>
+                <div class="flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-forge-600 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                    </svg>
+                    <span>Early access to new tools</span>
+                </div>
+                <div class="flex items-center text-gray-400">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
+                    </svg>
+                    <span class="line-through">Batch processing</span>
+                </div>
+            </div>
+            <div class="w-full px-4 py-3 bg-gray-100 text-gray-800 font-medium rounded-lg text-center">
+                Available soon
+            </div>
+        </div>
+        
+        <!-- Pro Tier -->
+        <div class="bg-white p-8 rounded-xl shadow-sm border border-gray-200 animate-fade-in-up animate-delay-400">
+            <div class="absolute top-0 right-0 bg-gray-500 text-white text-xs font-bold px-3 py-1 rounded-bl-lg">
+                Coming Soon
+            </div>
+            <div class="mb-6">
+                <h3 class="text-2xl font-semibold text-gray-900 mb-2">Pro</h3>
+                <p class="text-gray-600">For professionals & businesses</p>
+            </div>
+            <div class="mb-6">
+                <span class="text-4xl font-bold text-gray-900">$100</span>
+                <span class="text-gray-600">one-time</span>
+            </div>
+            <div class="space-y-4 mb-8">
+                <div class="flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-forge-600 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                    </svg>
+                    <span>Everything in Plus</span>
+                </div>
+                <div class="flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-forge-600 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                    </svg>
+                    <span>Batch processing (bulk upload)</span>
+                </div>
+                <div class="flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-forge-600 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                    </svg>
+                    <span>Fastest processing speeds</span>
+                </div>
+                <div class="flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-forge-600 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                    </svg>
+                    <span>Premium-only tools & filters</span>
+                </div>
+                <div class="flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-forge-600 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                    </svg>
+                    <span>Early access + beta features</span>
+                </div>
+            </div>
+            <div class="w-full px-4 py-3 bg-gray-100 text-gray-800 font-medium rounded-lg text-center">
+                Available soon
+            </div>
+        </div>
+    </div>
+
+    <div class="text-center mt-12 max-w-2xl mx-auto bg-forge-50 border border-forge-100 rounded-lg p-6">
+        <h3 class="text-lg font-medium text-forge-800 mb-2">Want these premium features sooner?</h3>
+        <p class="text-forge-700">Help us grow! The more people use our service, the sooner we can launch these paid plans with advanced features.</p>
+    </div>
+</section>
+
+    <!-- FAQ Section -->
+    <section id="faq" class="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+        <div class="text-center mb-16">
+            <span class="inline-block px-3 py-1 text-sm font-medium rounded-full bg-forge-100 text-forge-800 mb-4">FAQ</span>
+            <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Common Questions</h2>
+            <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+                Everything you need to know about Forge. Can't find an answer? Contact us.
+            </p>
+        </div>
+        
+        <div class="max-w-3xl mx-auto">
+            <div class="space-y-4">
+                <!-- FAQ Item 1 -->
+                <div class="bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm animate-fade-in-up">
+                    <button class="faq-toggle w-full flex justify-between items-center p-6 text-left hover:bg-gray-50 transition-colors">
+                        <h3 class="text-lg font-semibold">Is Forge really free to use?</h3>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500 transform transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </button>
+                    <div class="faq-content px-6 pb-6 hidden">
+                        <p class="text-gray-600">
+                            Yes! The Starter plan is completely free forever with all core tools available. We offer-<br> <a href="download.html" class="text-forge-500 hover:underline" target="_blank" rel="noopener noreferrer">Premium Plans</a> with more features for those who need them.
+                        </p>
+                    </div>
+                </div>
+                
+                <!-- FAQ Item 2 -->
+                <div class="bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm animate-fade-in-up animate-delay-100">
+                    <button class="faq-toggle w-full flex justify-between items-center p-6 text-left hover:bg-gray-50 transition-colors">
+                        <h3 class="text-lg font-semibold">Can I use Forge offline?</h3>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500 transform transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </button>
+                    <div class="faq-content px-6 pb-6 hidden">
+                        <p class="text-gray-600">
+                            No, Forge requires an internet connection. However, our <a href="download.html" class="text-forge-500 hover:underline" target="_blank" rel="noopener noreferrer">Web Extensions</a> all work without an internet connection.
+                        </p>
+                    </div>
+                </div>
+                
+                <!-- FAQ Item 3 -->
+                <div class="bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm animate-fade-in-up animate-delay-200">
+                    <button class="faq-toggle w-full flex justify-between items-center p-6 text-left hover:bg-gray-50 transition-colors">
+                        <h3 class="text-lg font-semibold">How does Forge make money?</h3>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500 transform transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </button>
+                    <div class="faq-content px-6 pb-6 hidden">
+<p class="text-gray-600">
+    We offer  <a href="#pricing" class="text-forge-500 hover:underline" target="_blank" rel="noopener noreferrer">Premium Plans</a> with additional features. These optional upgrades help support development and maintenance of the free version. We also rely heavily on contributions made through 
+    <a href="https://buymeacoffee.com/galore" class="text-forge-500 hover:underline" target="_blank" rel="noopener noreferrer">BuyMeACoffee</a>.
+</p>
+
+                    </div>
+                </div>
+                
+                <!-- FAQ Item 4 -->
+                <div class="bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm animate-fade-in-up animate-delay-300">
+                    <button class="faq-toggle w-full flex justify-between items-center p-6 text-left hover:bg-gray-50 transition-colors">
+                        <h3 class="text-lg font-semibold">Can I export my data?</h3>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500 transform transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </button>
+                    <div class="faq-content px-6 pb-6 hidden">
+                        <p class="text-gray-600">
+                            Yes, you can export all/some your data at any time in standard formats (PDF, CSV, DOCX, etc.) on some Supported Tools. We believe you should always have control over your data.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+<!-- About Us Section -->
+<section class="py-20 bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid md:grid-cols-2 gap-12 items-center">
+            <div class="order-2 md:order-1">
+                <span class="inline-block px-3 py-1 text-sm font-medium rounded-full bg-forge-100 text-forge-800 mb-4">Our Story</span>
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Building Tools for Everyone</h2>
+                <p class="text-lg text-gray-600 mb-6">
+                    Forge was born from a simple idea: powerful digital tools shouldn't be locked behind paywalls or complicated interfaces. 
+                    Our team of designers, developers, and creators are building an open ecosystem where anyone can create without limits.
+                </p>
+                <p class="text-gray-600 mb-8">
+                    Since 2020, we've been committed to making professional-grade tools accessible to students, entrepreneurs, and creative professionals worldwide.
+                </p>
+                <a href="about.html" class="px-6 py-3 rounded-lg bg-white border border-gray-300 text-gray-800 font-medium hover:bg-gray-50 transition-colors shadow-sm hover:shadow-md inline-flex items-center">
+                    Read Our Story
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+                    </svg>
+                </a>
+            </div>
+            <div class="order-1 md:order-2">
+                <img src="images/ourstory.svg" alt="Our team working together" class="w-full h-auto max-w-md mx-auto rounded-lg shadow-sm">
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Our Extensions Section -->
+<section class="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+  <div class="text-center mb-16">
+    <span class="inline-block px-3 py-1 text-sm font-medium rounded-full bg-forge-100 text-forge-800 mb-4">Our Extensions</span>
+    <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Our Extensions</h2>
+    <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+      Powerful tools that integrate seamlessly with Forge to enhance your productivity
+    </p>
+  </div>
+
+  <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <!-- Tasks Extension -->
+    <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 hover:shadow-md transition-shadow">
+      <div class="flex items-center mb-4">
+        <div class="w-10 h-10 rounded-lg bg-orange-100 flex items-center justify-center mr-4">
+
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-orange-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+          </svg>
+        </div>
+        <h3 class="text-lg font-semibold text-gray-900">Forge Tasks</h3>
+      </div>
+      <p class="text-gray-600 mb-2">Manage your to-dos with powerful task organization and reminders.</p>
+      <a href="download.html#tasks" class="inline-flex items-center text-orange-600 font-medium hover:underline">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5 5-5M12 4v12" />
+        </svg>
+        Download
+      </a>
+    </div>
+
+    <!-- Calendar Extension -->
+    <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 hover:shadow-md transition-shadow">
+      <div class="flex items-center mb-4">
+<div class="w-10 h-10 rounded-lg bg-orange-100 flex items-center justify-center mr-4">
+
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-orange-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+          </svg>
+        </div>
+        <h3 class="text-lg font-semibold text-gray-900">Forge Calendar</h3>
+      </div>
+      <p class="text-gray-600 mb-2">Sync your schedule across devices with smart event management.</p>
+      <a href="download.html#calendar" class="inline-flex items-center text-orange-600 font-medium hover:underline">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5 5-5M12 4v12" />
+        </svg>
+        Download
+      </a>
+    </div>
+
+    <!-- Color Picker Extension -->
+    <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 hover:shadow-md transition-shadow">
+      <div class="flex items-center mb-4">
+        <div class="w-10 h-10 rounded-lg bg-orange-100 flex items-center justify-center mr-4">
+
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-orange-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" />
+          </svg>
+        </div>
+        <h3 class="text-lg font-semibold text-gray-900">Forge Color Picker</h3>
+      </div>
+      <p class="text-gray-600 mb-2">Capture and organize colors from anywhere with advanced palettes.</p>
+      <a href="download.html#color" class="inline-flex items-center text-orange-600 font-medium hover:underline">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5 5-5M12 4v12" />
+        </svg>
+        Download
+      </a>
+    </div>
+  </div>
+
+  <!-- Centered bottom row with two cards -->
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6 max-w-2xl mx-auto">
+    <!-- Notes Extension -->
+    <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 hover:shadow-md transition-shadow">
+      <div class="flex items-center mb-4">
+     <div class="w-10 h-10 rounded-lg bg-orange-100 flex items-center justify-center mr-4">
+
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-orange-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+          </svg>
+        </div>
+        <h3 class="text-lg font-semibold text-gray-900">Forge Notes</h3>
+      </div>
+      <p class="text-gray-600 mb-2">Rich text notes with markdown support and instant syncing.</p>
+      <a href="download.html#notes" class="inline-flex items-center text-orange-600 font-medium hover:underline">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5 5-5M12 4v12" />
+        </svg>
+        Download
+      </a>
+    </div>
+
+    <!-- QR Code Extension -->
+    <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 hover:shadow-md transition-shadow">
+      <div class="flex items-center mb-4">
+        <div class="w-10 h-10 rounded-lg bg-orange-100 flex items-center justify-center mr-4">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-orange-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z" />
+          </svg>
+        </div>
+        <h3 class="text-lg font-semibold text-gray-900">Forge QR Code</h3>
+      </div>
+      <p class="text-gray-600 mb-2">Generate and scan QR codes instantly for links and information.</p>
+      <a href="download.html#qrcode" class="inline-flex items-center text-orange-600 font-medium hover:underline">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5 5-5M12 4v12" />
+        </svg>
+        Download
+      </a>
+    </div>
+  </div>
+</section>
+
+
+
+    <!-- Get Started Section - Inspired by Apple -->
+    <section id="get-started" class="py-20 bg-gray-900 text-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 class="text-3xl md:text-4xl font-bold mb-6">Ready to Forge Your Future?</h2>
+            <p class="text-xl text-gray-300 mb-8 max-w-3xl mx-auto">
+                Join thousands of creators, students, and professionals who are already building with Forge.
+            </p>
+            <div class="flex flex-wrap justify-center gap-4">
+                <a href="#tools" class="px-6 py-3 rounded-lg bg-white text-gray-900 font-medium hover:bg-gray-100 transition-colors shadow-lg hover:shadow-xl">
+                    Get Started for Free
+                </a>
+                <a href="#pricing" class="px-6 py-3 rounded-lg bg-gray-800 text-white font-medium hover:bg-gray-700 transition-colors shadow hover:shadow-md border border-gray-700">
+                    Compare Plans
+                </a>
+            </div>
+        </div>
+    </section>
+
+
+
+
+
+    <footer class="bg-gray-100 text-gray-600 border-t border-gray-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+<div class="grid grid-cols-2 md:grid-cols-5 gap-8">
+    <div class="col-span-2">
+        <a href="#" class="flex items-center space-x-2 mb-6">
+            <img src="images/logo.svg" alt="Forge Logo" class="h-8 w-auto">
+            <span class="text-xl font-medium text-gray-900">Forge by Blacnova</span>
+        </a>
+        <p class="text-sm mb-6">
+            The complete open-source toolkit for creators, students, and professionals.
+        </p>
+        <div class="flex space-x-4">
+            <a href="https://x.com/forgebyblacnova" class="text-gray-500 hover:text-forge-600 transition-colors">
+                <span class="sr-only">Twitter</span>
+                <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84" />
+                </svg>
+            </a>
+            <a href="https://www.facebook.com/profile.php?id=61564521771890" class="text-gray-500 hover:text-forge-600 transition-colors">
+                <span class="sr-only">Facebook</span>
+                <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
+                    <path fill-rule="evenodd" d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" clip-rule="evenodd" />
+                </svg>
+            </a>
+            <a href="https://www.instagram.com/forgebyblacnova/" class="text-gray-500 hover:text-forge-600 transition-colors">
+                <span class="sr-only">Instagram</span>
+                <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
+                    <path fill-rule="evenodd" d="M12.315 2c2.43 0 2.784.013 3.808.06 1.064.049 1.791.218 2.427.465a4.902 4.902 0 011.772 1.153 4.902 4.902 0 011.153 1.772c.247.636.416 1.363.465 2.427.048 1.067.06 1.407.06 4.123v.08c0 2.643-.012 2.987-.06 4.043-.049 1.064-.218 1.791-.465 2.427a4.902 4.902 0 01-1.153 1.772 4.902 4.902 0 01-1.772 1.153c-.636.247-1.363.416-2.427.465-1.067.048-1.407.06-4.123.06h-.08c-2.643 0-2.987-.012-4.043-.06-1.064-.049-1.791-.218-2.427-.465a4.902 4.902 0 01-1.772-1.153 4.902 4.902 0 01-1.153-1.772c-.247-.636-.416-1.363-.465-2.427-.047-1.024-.06-1.379-.06-3.808v-.63c0-2.43.013-2.784.06-3.808.049-1.064.218-1.791.465-2.427a4.902 4.902 0 011.153-1.772A4.902 4.902 0 015.45 2.525c.636-.247 1.363-.416 2.427-.465C8.901 2.013 9.256 2 11.685 2h.63zm-.081 1.802h-.468c-2.456 0-2.784.011-3.807.058-.975.045-1.504.207-1.857.344-.467.182-.8.398-1.15.748-.35.35-.566.683-.748 1.15-.137.353-.3.882-.344 1.857-.047 1.023-.058 1.351-.058 3.807v.468c0 2.456.011 2.784.058 3.807.045.975.207 1.504.344 1.857.182.466.399.8.748 1.15.35.35.683.566 1.15.748.353.137.882.3 1.857.344 1.054.048 1.37.058 4.041.058h.08c2.597 0 2.917-.01 3.96-.058.976-.045 1.505-.207 1.858-.344.466-.182.8-.398 1.15-.748.35-.35.566-.683.748-1.15.137-.353.3-.882.344-1.857.048-1.055.058-1.37.058-4.041v-.08c0-2.597-.01-2.917-.058-3.96-.045-.976-.207-1.505-.344-1.858a3.097 3.097 0 00-.748-1.15 3.098 3.098 0 00-1.15-.748c-.353-.137-.882-.3-1.857-.344-1.023-.047-1.351-.058-3.807-.058zM12 6.865a5.135 5.135 0 110 10.27 5.135 5.135 0 010-10.27zm0 1.802a3.333 3.333 0 100 6.666 3.333 3.333 0 000-6.666zm5.338-3.205a1.2 1.2 0 110 2.4 1.2 1.2 0 010-2.4z" clip-rule="evenodd" />
+                </svg>
+            </a>
+        </div>
+    </div>
+                <div>
+                    <h3 class="text-sm font-semibold text-gray-900 tracking-wider uppercase mb-4">Explore</h3>
+                    <ul class="space-y-3">
+                        <li><a href="#features" class="text-sm hover:text-forge-600 transition-colors">Features</a></li>
+                        <li><a href="#tools" class="text-sm hover:text-forge-600 transition-colors">Tools</a></li>
+                        <li><a href="#pricing" class="text-sm hover:text-forge-600 transition-colors">Pricing</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3 class="text-sm font-semibold text-gray-900 tracking-wider uppercase mb-4">Company</h3>
+                    <ul class="space-y-3">
+                        <li><a href="about.html" class="text-sm hover:text-forge-600 transition-colors">About</a></li>
+                        <li><a href="contact.html" class="text-sm hover:text-forge-600 transition-colors">Contact</a></li>
+                        <li><a href="#faq" class="text-sm hover:text-forge-600 transition-colors">FAQ</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-sm font-semibold text-gray-900 tracking-wider uppercase mb-4">Legal</h3>
+                    <ul class="space-y-3">
+                        <li><a href="policy.html" class="text-sm hover:text-forge-600 transition-colors">Privacy</a></li>
+                        <li><a href="policy.html#legal" class="text-sm hover:text-forge-600 transition-colors">Terms</a></li>
+                        <li><a href="policy.html#cookies" class="text-sm hover:text-forge-600 transition-colors">Cookies</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="mt-12 pt-8 border-t border-gray-200 flex flex-col md:flex-row justify-between items-center">
+                <p class="text-sm">
+                    &copy; 2025 Forge by Blacnova. All rights reserved.
+                </p>
+
+            </div>
+        </div>
+         <!-- Support Us Section -->
+      <div class="bg-forge-600 mt-6 text-white text-center py-4 px-4">
+        <p class="text-sm">
+          We don’t rely on ads to keep running. If you love Forge, consider 
+          <a href="https://buymeacoffee.com/galore" class="underline hover:text-gray-200 transition-colors">supporting us</a>.
+        </p>
+      </div>
+    </footer>
+
+    <script>
+        // Mobile menu toggle
+        document.querySelector('nav button').addEventListener('click', function() {
+            // Implement mobile menu toggle functionality here
+            console.log('Mobile menu toggled');
+        });
+
+        // FAQ toggle functionality
+        document.querySelectorAll('.faq-toggle').forEach(button => {
+            button.addEventListener('click', () => {
+                const content = button.nextElementSibling;
+                const icon = button.querySelector('svg');
+                
+                // Toggle content visibility
+                content.classList.toggle('hidden');
+                
+                // Toggle icon rotation
+                icon.classList.toggle('rotate-180');
+                
+                // Close other open FAQs
+                document.querySelectorAll('.faq-toggle').forEach(otherButton => {
+                    if (otherButton !== button) {
+                        otherButton.nextElementSibling.classList.add('hidden');
+                        otherButton.querySelector('svg').classList.remove('rotate-180');
+                    }
+                });
+            });
+        });
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    targetElement.scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // Animation on scroll
+        function animateOnScroll() {
+            const elements = document.querySelectorAll('.animate-fade-in-up');
+            
+            elements.forEach(element => {
+                const elementPosition = element.getBoundingClientRect().top;
+                const screenPosition = window.innerHeight / 1.2;
+                
+                if (elementPosition < screenPosition) {
+                    element.style.opacity = '1';
+                    element.style.transform = 'translateY(0)';
+                }
+            });
+        }
+
+        // Run once on page load
+        animateOnScroll();
+        
+        // Run on scroll
+        window.addEventListener('scroll', animateOnScroll);
+    </script>
+</body>
+</html>

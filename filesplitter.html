@@ -1,0 +1,1270 @@
+ <!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>File Splitter - Forge by Blacnova</title>
+    <meta name="description" content="Easily split large files into smaller parts with the File Splitter tool. Perfect for managing and sharing large files with ease.">
+
+    <!-- SEO Meta Tags -->
+    <meta name="keywords" content="File Splitter, file splitting, split large files, file management, file tool, Forge tools, Blacnova, productivity tools, file compression">
+    <meta name="author" content="Nicholas Xander Davis, Blacnova Development">
+    <meta name="robots" content="index, follow">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="File Splitter - Forge by Blacnova">
+    <meta property="og:description" content="Split large files into smaller parts with ease. Ideal for users needing to manage and share large files quickly.">
+    <meta property="og:image" content="./images/forge.png">
+    <meta property="og:url" content="https://www.forgebyblacnova.net/filesplitter.html">
+    <meta property="og:site_name" content="Forge by Blacnova">
+
+    <!-- Twitter Meta -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="File Splitter - Forge by Blacnova">
+    <meta name="twitter:description" content="Easily split large files into smaller, manageable parts. Perfect for sharing and organizing files efficiently.">
+    <meta name="twitter:image" content="./images/forge.png">
+    <meta name="twitter:creator" content="@forgebyblacnova">
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="images/forge.png" type="image/png">
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        forge: {
+                            50: '#fff7ed',
+                            100: '#ffedd5',
+                            200: '#fed7aa',
+                            300: '#fdba74',
+                            400: '#fb923c',
+                            500: '#f97316',
+                            600: '#ea580c',
+                            700: '#c2410c',
+                            800: '#9a3412',
+                            900: '#7c2d12',
+                        },
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 0.5s ease-in forwards',
+                        'fade-in-up': 'fadeInUp 0.6s ease-out forwards',
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: '0' },
+                            '100%': { opacity: '1' },
+                        },
+                        fadeInUp: {
+                            '0%': { opacity: '0', transform: 'translateY(20px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        },
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+
+    <style>
+        .gradient-text {
+            background: linear-gradient(90deg, #f97316, #ea580c);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        .gradient-bg {
+            background: linear-gradient(135deg, #f97316, #ea580c);
+        }
+        .tool-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(249, 115, 22, 0.2), 0 10px 10px -5px rgba(249, 115, 22, 0.1);
+        }
+        .tool-card {
+            transition: all 0.3s ease;
+        }
+        .animate-delay-100 {
+            animation-delay: 0.1s;
+        }
+        .animate-delay-200 {
+            animation-delay: 0.2s;
+        }
+        .animate-delay-300 {
+            animation-delay: 0.3s;
+        }
+        .animate-delay-400 {
+            animation-delay: 0.4s;
+        }
+        .animate-delay-500 {
+            animation-delay: 0.5s;
+        }
+        .header-blur {
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+    </style>
+<body class="bg-white font-sans text-gray-800 antialiased">
+<nav class="fixed w-full bg-white/80 header-blur shadow-sm z-50 border-b border-gray-100">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between h-16 items-center">
+            <div class="flex items-center">
+                <a href="index.html" class="flex items-center space-x-2">
+                    <img src="images/logo.svg" alt="Forge Logo" class="h-8 w-auto">
+                    <span class="text-xl font-medium text-gray-900">Forge by Blacnova</span>
+                </a>
+            </div>
+            <div class="hidden md:flex items-center space-x-8">
+                <a href="index.html#features" class="text-gray-600 hover:text-forge-600 transition-colors font-medium">Features</a>
+                
+                <!-- Tools Dropdown -->
+                <div class="relative group" x-data="{ open: false, activeCategory: 'productivity' }" @mouseenter="open = true" @mouseleave="open = false">
+                    <button class="text-gray-600 hover:text-forge-600 transition-colors font-medium flex items-center">
+                        Tools
+                        <svg class="w-4 h-4 ml-1 transition-transform duration-200" :class="{ 'rotate-180': open }" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </button>
+                    
+                    <!-- Dropdown Panel -->
+                    <div x-show="open" x-transition:enter="transition ease-out duration-200" 
+                         x-transition:enter-start="opacity-0 translate-y-1" 
+                         x-transition:enter-end="opacity-100 translate-y-0" 
+                         x-transition:leave="transition ease-in duration-150" 
+                         x-transition:leave-start="opacity-100 translate-y-0" 
+                         x-transition:leave-end="opacity-0 translate-y-1"
+                         class="absolute left-0 mt-2 w-[600px] bg-white rounded-lg shadow-xl border border-gray-200 overflow-hidden z-50"
+                         @mouseenter="open = true" @mouseleave="open = false">
+                        <div class="grid grid-cols-3">
+                            <!-- Categories Column -->
+                            <div class="col-span-1 bg-gray-50 p-4">
+                                <h3 class="font-medium text-gray-900 mb-3">Categories</h3>
+                                <ul class="space-y-2">
+                                    <li>
+                                        <button @mouseenter="activeCategory = 'productivity'" 
+                                                :class="{ 'text-forge-600 bg-white shadow-sm': activeCategory === 'productivity', 'text-gray-700': activeCategory !== 'productivity' }"
+                                                class="w-full text-left px-3 py-2 rounded-md font-medium hover:bg-gray-100 transition-colors">
+                                            Productivity
+                                        </button>
+                                    </li>
+                                    <li>
+                                        <button @mouseenter="activeCategory = 'devtools'" 
+                                                :class="{ 'text-forge-600 bg-white shadow-sm': activeCategory === 'devtools', 'text-gray-700': activeCategory !== 'devtools' }"
+                                                class="w-full text-left px-3 py-2 rounded-md font-medium hover:bg-gray-100 transition-colors">
+                                            Dev Tools
+                                        </button>
+                                    </li>
+                                    <li>
+                                        <button @mouseenter="activeCategory = 'filetools'" 
+                                                :class="{ 'text-forge-600 bg-white shadow-sm': activeCategory === 'filetools', 'text-gray-700': activeCategory !== 'filetools' }"
+                                                class="w-full text-left px-3 py-2 rounded-md font-medium hover:bg-gray-100 transition-colors">
+                                            File Tools
+                                        </button>
+                                    </li>
+                                    <li>
+                                        <button @mouseenter="activeCategory = 'generators'" 
+                                                :class="{ 'text-forge-600 bg-white shadow-sm': activeCategory === 'generators', 'text-gray-700': activeCategory !== 'generators' }"
+                                                class="w-full text-left px-3 py-2 rounded-md font-medium hover:bg-gray-100 transition-colors">
+                                            Generators
+                                        </button>
+                                    </li>
+                                    <li>
+                                        <button @mouseenter="activeCategory = 'writing'" 
+                                                :class="{ 'text-forge-600 bg-white shadow-sm': activeCategory === 'writing', 'text-gray-700': activeCategory !== 'writing' }"
+                                                class="w-full text-left px-3 py-2 rounded-md font-medium hover:bg-gray-100 transition-colors">
+                                            Writing
+                                        </button>
+                                    </li>
+                                    <li>
+                                        <button @mouseenter="activeCategory = 'converters'" 
+                                                :class="{ 'text-forge-600 bg-white shadow-sm': activeCategory === 'converters', 'text-gray-700': activeCategory !== 'converters' }"
+                                                class="w-full text-left px-3 py-2 rounded-md font-medium hover:bg-gray-100 transition-colors">
+                                            Converters
+                                        </button>
+                                    </li>
+                                </ul>
+                            </div>
+                            
+                            <!-- Tools Column -->
+                            <div class="col-span-2 p-4">
+                                <!-- Productivity Tools -->
+                                <div x-show="activeCategory === 'productivity'" class="space-y-3">
+                                    <h4 class="font-medium text-gray-900 mb-2">Productivity Tools</h4>
+                                    <a href="./tasks.html" class="block px-3 py-2 rounded-md hover:bg-gray-50 transition-colors">
+                                        <p class="font-medium">Task Manager</p>
+                                        <p class="text-sm text-gray-500">Organize your tasks and to-dos</p>
+                                    </a>
+                                    <a href="./calander.html" class="block px-3 py-2 rounded-md hover:bg-gray-50 transition-colors">
+                                        <p class="font-medium">Calendar</p>
+                                        <p class="text-sm text-gray-500">Manage your schedule and events</p>
+                                    </a>
+                                    <a href="./qrcode.html" class="block px-3 py-2 rounded-md hover:bg-gray-50 transition-colors">
+                                        <p class="font-medium">QR Code Generator</p>
+                                        <p class="text-sm text-gray-500">Create QR codes for any content</p>
+                                    </a>
+                                </div>
+                                
+                                <!-- Dev Tools -->
+                                <div x-show="activeCategory === 'devtools'" class="space-y-3" style="display: none;">
+                                    <h4 class="font-medium text-gray-900 mb-2">Developer Tools</h4>
+                                    <a href="./designer.html" class="block px-3 py-2 rounded-md hover:bg-gray-50 transition-colors">
+                                        <p class="font-medium">Designer</p>
+                                        <p class="text-sm text-gray-500">Create graphics and visual designs</p>
+                                    </a>
+                                    <a href="./playground.html" class="block px-3 py-2 rounded-md hover:bg-gray-50 transition-colors">
+                                        <p class="font-medium">Playground</p>
+                                        <p class="text-sm text-gray-500">Experiment with code snippets</p>
+                                    </a>
+                                </div>
+                                
+                                <!-- File Tools -->
+                                <div x-show="activeCategory === 'filetools'" class="space-y-3" style="display: none;">
+                                    <h4 class="font-medium text-gray-900 mb-2">File Tools</h4>
+                                    <a href="./filesplitter.html" class="block px-3 py-2 rounded-md hover:bg-gray-50 transition-colors">
+                                        <p class="font-medium">File Splitter</p>
+                                        <p class="text-sm text-gray-500">Split large files into smaller parts</p>
+                                    </a>
+                                    <a href="./compressor.html" class="block px-3 py-2 rounded-md hover:bg-gray-50 transition-colors">
+                                        <p class="font-medium">File Compressor</p>
+                                        <p class="text-sm text-gray-500">Reduce file sizes efficiently</p>
+                                    </a>
+                                </div>
+                                
+                                <!-- Generators -->
+                                <div x-show="activeCategory === 'generators'" class="space-y-3" style="display: none;">
+                                    <h4 class="font-medium text-gray-900 mb-2">Generators</h4>
+                                    <a href="./usernamegen.html" class="block px-3 py-2 rounded-md hover:bg-gray-50 transition-colors">
+                                        <p class="font-medium">Username Generator</p>
+                                        <p class="text-sm text-gray-500">Create unique usernames</p>
+                                    </a>
+                                    <a href="./colorgen.html" class="block px-3 py-2 rounded-md hover:bg-gray-50 transition-colors">
+                                        <p class="font-medium">Color Generator</p>
+                                        <p class="text-sm text-gray-500">Generate color palettes</p>
+                                    </a>
+                                    <a href="./namegen.html" class="block px-3 py-2 rounded-md hover:bg-gray-50 transition-colors">
+                                        <p class="font-medium">Name Generator</p>
+                                        <p class="text-sm text-gray-500">Generate random names</p>
+                                    </a>
+                                    <a href="./passwordgen.html" class="block px-3 py-2 rounded-md hover:bg-gray-50 transition-colors">
+                                        <p class="font-medium">Password Generator</p>
+                                        <p class="text-sm text-gray-500">Create secure passwords</p>
+                                    </a>
+                                    <a href="./numbergen.html" class="block px-3 py-2 rounded-md hover:bg-gray-50 transition-colors">
+                                        <p class="font-medium">Number Generator</p>
+                                        <p class="text-sm text-gray-500">Generate random numbers</p>
+                                    </a>
+                                </div>
+                                
+                                <!-- Writing Tools -->
+                                <div x-show="activeCategory === 'writing'" class="space-y-3" style="display: none;">
+                                    <h4 class="font-medium text-gray-900 mb-2">Writing Tools</h4>
+                                    <a href="./grammar.html" class="block px-3 py-2 rounded-md hover:bg-gray-50 transition-colors">
+                                        <p class="font-medium">Grammar Checker</p>
+                                        <p class="text-sm text-gray-500">Improve your writing quality</p>
+                                    </a>
+                                    <a href="./notes.html" class="block px-3 py-2 rounded-md hover:bg-gray-50 transition-colors">
+                                        <p class="font-medium">Notes</p>
+                                        <p class="text-sm text-gray-500">Capture and organize your thoughts</p>
+                                    </a>
+                                </div>
+                                
+                                <!-- Converters -->
+                                <div x-show="activeCategory === 'converters'" class="space-y-3" style="display: none;">
+                                    <h4 class="font-medium text-gray-900 mb-2">Converters</h4>
+                                    <a href="./timeconverter.html" class="block px-3 py-2 rounded-md hover:bg-gray-50 transition-colors">
+                                        <p class="font-medium">Time Converter</p>
+                                        <p class="text-sm text-gray-500">Convert between time zones</p>
+                                    </a>
+                                    <a href="./currencyconverter.html" class="block px-3 py-2 rounded-md hover:bg-gray-50 transition-colors">
+                                        <p class="font-medium">Currency Converter</p>
+                                        <p class="text-sm text-gray-500">Convert between currencies</p>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <a href="index.html#pricing" class="text-gray-600 hover:text-forge-600 transition-colors font-medium">Pricing</a>
+                <a href="index.html#faq" class="text-gray-600 hover:text-forge-600 transition-colors font-medium">FAQ</a>
+                <a href="contact.html" class="text-gray-600 hover:text-forge-600 transition-colors font-medium">Contact</a>
+            </div>
+            <div class="flex items-center">
+                <a href="download.html" class="hidden md:block px-4 py-2 rounded-lg bg-forge-600 text-white font-medium hover:bg-forge-700 transition-colors shadow-md">
+                    Our Extensions
+                </a>
+                <button id="mobile-menu-button" class="md:hidden text-gray-600 hover:text-forge-600 focus:outline-none">
+                    <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile menu -->
+    <div id="mobile-menu" class="md:hidden hidden bg-white border-t border-gray-200">
+        <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+            <a href="index.html#features" class="block px-3 py-2 rounded-md text-base font-medium text-gray-600 hover:text-forge-600 hover:bg-forge-50">Features</a>
+            <a href="index.html#tools" class="block px-3 py-2 rounded-md text-base font-medium text-gray-600 hover:text-forge-600 hover:bg-forge-50">Tools</a>
+            <a href="index.html#pricing" class="block px-3 py-2 rounded-md text-base font-medium text-gray-600 hover:text-forge-600 hover:bg-forge-50">Pricing</a>
+            <a href="index.html#faq" class="block px-3 py-2 rounded-md text-base font-medium text-gray-600 hover:text-forge-600 hover:bg-forge-50">FAQ</a>
+            <a href="contact.html" class="block px-3 py-2 rounded-md text-base font-medium text-gray-600 hover:text-forge-600 hover:bg-forge-50">Contact</a>
+            <a href="download.html" class="block px-3 py-2 rounded-md text-base font-medium text-white bg-forge-600 hover:bg-forge-700">Get Started</a>
+        </div>
+    </div>
+</nav>
+
+<script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+
+<!-- Updated JavaScript -->
+<script>
+    // Mobile menu toggle
+    const mobileMenuButton = document.getElementById('mobile-menu-button');
+    const mobileMenu = document.getElementById('mobile-menu');
+
+    mobileMenuButton.addEventListener('click', function() {
+        const isExpanded = mobileMenuButton.getAttribute('aria-expanded') === 'true';
+        mobileMenuButton.setAttribute('aria-expanded', !isExpanded);
+        mobileMenu.classList.toggle('hidden');
+        
+        // Toggle between menu and close icon
+        if (!isExpanded) {
+            mobileMenuButton.innerHTML = `
+                <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            `;
+        } else {
+            mobileMenuButton.innerHTML = `
+                <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+            `;
+        }
+    });
+
+    // Close mobile menu when clicking on a link
+    document.querySelectorAll('#mobile-menu a').forEach(link => {
+        link.addEventListener('click', () => {
+            mobileMenu.classList.add('hidden');
+            mobileMenuButton.setAttribute('aria-expanded', 'false');
+            mobileMenuButton.innerHTML = `
+                <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+            `;
+        });
+    });
+
+    // FAQ toggle functionality
+    document.querySelectorAll('.faq-toggle').forEach(button => {
+        button.addEventListener('click', () => {
+            const content = button.nextElementSibling;
+            const icon = button.querySelector('svg');
+            
+            // Toggle content visibility
+            content.classList.toggle('hidden');
+            
+            // Toggle icon rotation
+            icon.classList.toggle('rotate-180');
+            
+            // Close other open FAQs
+            document.querySelectorAll('.faq-toggle').forEach(otherButton => {
+                if (otherButton !== button) {
+                    otherButton.nextElementSibling.classList.add('hidden');
+                    otherButton.querySelector('svg').classList.remove('rotate-180');
+                }
+            });
+        });
+    });
+
+    // Smooth scrolling for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            const targetId = this.getAttribute('href');
+            if (targetId === '#') return;
+            
+            const targetElement = document.querySelector(targetId);
+            if (targetElement) {
+                targetElement.scrollIntoView({
+                    behavior: 'smooth'
+                });
+            }
+        });
+    });
+
+    // Animation on scroll
+    function animateOnScroll() {
+        const elements = document.querySelectorAll('.animate-fade-in-up');
+        
+        elements.forEach(element => {
+            const elementPosition = element.getBoundingClientRect().top;
+            const screenPosition = window.innerHeight / 1.2;
+            
+            if (elementPosition < screenPosition) {
+                element.style.opacity = '1';
+                element.style.transform = 'translateY(0)';
+            }
+        });
+    }
+
+    // Run once on page load
+    animateOnScroll();
+    
+    // Run on scroll
+    window.addEventListener('scroll', animateOnScroll);
+</script>
+
+
+<section id="file-splitter" class="py-20 bg-gray-50">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-12">
+      <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-forge-100 text-forge-800 mb-4">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 13h6m-3-3v6m-9 1V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z" />
+        </svg>
+        File Tools
+      </span>
+      <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Advanced File Splitter</h2>
+      <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+        Split large files or folders into smaller parts for easier sharing and storage
+      </p>
+    </div>
+
+    <div class="grid md:grid-cols-3 gap-6">
+      <!-- File Upload & Settings -->
+      <div class="bg-white rounded-xl shadow-md overflow-hidden border border-gray-200">
+        <div class="p-4 bg-gray-50 border-b border-gray-200">
+          <h3 class="font-medium text-gray-900">File Settings</h3>
+        </div>
+        <div class="p-4 space-y-6">
+          <!-- File Drop Zone -->
+          <div id="drop-zone" class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center cursor-pointer hover:border-forge-500 transition-colors">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mx-auto text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+            </svg>
+            <p class="mt-2 text-sm text-gray-600">Drag & drop files or folders here</p>
+            <p class="text-xs text-gray-500 mt-1">or click to browse</p>
+            <input type="file" id="file-input" class="hidden" webkitdirectory directory multiple>
+          </div>
+          
+          <!-- File Info -->
+          <div id="file-info" class="hidden">
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-sm font-medium text-gray-700 truncate" id="file-name">filename.ext</span>
+              <button id="remove-file" class="text-gray-400 hover:text-red-500 transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                </svg>
+              </button>
+            </div>
+            <div class="flex justify-between text-xs text-gray-500">
+              <span id="file-size">0 MB</span>
+              <span id="file-count">0 files</span>
+              <span id="file-type">Type: Folder</span>
+            </div>
+            <div id="file-tree" class="mt-2 max-h-40 overflow-y-auto text-xs border rounded p-2 hidden">
+              <!-- Folder structure will appear here -->
+            </div>
+          </div>
+          
+          <!-- Split Options -->
+          <div>
+            <label for="split-method" class="block text-sm font-medium text-gray-700 mb-1">Split Method</label>
+            <select id="split-method" class="w-full pl-3 pr-10 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-forge-500 focus:border-forge-500">
+              <option value="size">By Size</option>
+              <option value="parts">By Parts</option>
+              <option value="zip" selected>As ZIP Archive</option>
+            </select>
+          </div>
+          
+          <div id="size-options" class="hidden">
+            <label for="chunk-size" class="block text-sm font-medium text-gray-700 mb-1">Part Size</label>
+            <div class="flex items-center space-x-3">
+              <input type="number" id="chunk-size" value="10" min="1" class="w-20 pl-3 pr-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-forge-500 focus:border-forge-500">
+              <select id="size-unit" class="flex-1 pl-3 pr-10 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-forge-500 focus:border-forge-500">
+                <option value="MB">MB</option>
+                <option value="KB">KB</option>
+                <option value="GB">GB</option>
+              </select>
+            </div>
+          </div>
+          
+          <div id="parts-options" class="hidden">
+            <label for="num-parts" class="block text-sm font-medium text-gray-700 mb-1">Number of Parts</label>
+            <input type="number" id="num-parts" value="2" min="2" class="w-full pl-3 pr-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-forge-500 focus:border-forge-500">
+          </div>
+          
+          <div id="zip-options">
+            <label for="zip-name" class="block text-sm font-medium text-gray-700 mb-1">Archive Name</label>
+            <input type="text" id="zip-name" placeholder="archive" class="w-full pl-3 pr-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-forge-500 focus:border-forge-500">
+            
+            <label for="compression-level" class="block text-sm font-medium text-gray-700 mb-1 mt-3">Compression Level</label>
+            <select id="compression-level" class="w-full pl-3 pr-10 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-forge-500 focus:border-forge-500">
+              <option value="0">No compression (fastest)</option>
+              <option value="6" selected>Medium compression</option>
+              <option value="9">Maximum compression (slowest)</option>
+            </select>
+          </div>
+          
+          <div class="pt-2">
+            <label class="block text-sm font-medium text-gray-700 mb-2">Options</label>
+            <div class="space-y-2">
+              <label class="flex items-center">
+                <input type="checkbox" id="checksum-option" class="h-4 w-4 text-forge-600 focus:ring-forge-500 border-gray-300 rounded" checked>
+                <span class="ml-2 text-sm text-gray-700">Create checksum files</span>
+              </label>
+              <label class="flex items-center">
+                <input type="checkbox" id="preserve-structure" class="h-4 w-4 text-forge-600 focus:ring-forge-500 border-gray-300 rounded" checked>
+                <span class="ml-2 text-sm text-gray-700">Preserve folder structure</span>
+              </label>
+            </div>
+          </div>
+          
+          <button id="process-button" class="w-full bg-forge-600 hover:bg-forge-700 text-white font-medium py-2 px-4 rounded-md transition-colors duration-200 flex items-center justify-center disabled:opacity-50" disabled>
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+            </svg>
+            Process Files
+          </button>
+        </div>
+      </div>
+
+      <!-- Progress & Results -->
+      <div class="md:col-span-2">
+        <div class="bg-white rounded-xl shadow-md overflow-hidden border border-gray-200 h-full flex flex-col">
+          <div class="p-4 bg-gray-50 border-b border-gray-200 flex justify-between items-center">
+            <h3 class="font-medium text-gray-900">Processing Results</h3>
+            <div class="flex space-x-2">
+              <button id="download-all" class="p-1 rounded-md hover:bg-gray-200 transition-colors" title="Download all" disabled>
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                </svg>
+              </button>
+              <button id="clear-results" class="p-1 rounded-md hover:bg-gray-200 transition-colors" title="Clear all">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                </svg>
+              </button>
+            </div>
+          </div>
+          <div class="p-4 flex-grow">
+            <!-- Progress Indicator -->
+            <div id="progress-container" class="hidden mb-6">
+              <div class="flex justify-between text-sm text-gray-600 mb-1">
+                <span id="progress-action">Processing files...</span>
+                <span id="progress-percent">0%</span>
+              </div>
+              <div class="w-full bg-gray-200 rounded-full h-2.5">
+                <div id="progress-bar" class="bg-forge-600 h-2.5 rounded-full" style="width: 0%"></div>
+              </div>
+              <div class="text-xs text-gray-500 mt-1" id="progress-status">Preparing to process...</div>
+            </div>
+            
+            <!-- Results List -->
+            <div class="border border-gray-200 rounded-lg overflow-hidden">
+              <table class="min-w-full divide-y divide-gray-200">
+                <thead class="bg-gray-50">
+                  <tr>
+                    <th scope="col" class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+                    <th scope="col" class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Size</th>
+                    <th scope="col" class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Checksum</th>
+                    <th scope="col" class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"></th>
+                  </tr>
+                </thead>
+                <tbody id="results-list" class="bg-white divide-y divide-gray-200">
+                  <tr class="bg-gray-50">
+                    <td colspan="4" class="px-4 py-4 text-center text-sm text-gray-500">No files processed yet</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // DOM Elements
+  const dropZone = document.getElementById('drop-zone');
+  const fileInput = document.getElementById('file-input');
+  const fileInfo = document.getElementById('file-info');
+  const fileName = document.getElementById('file-name');
+  const fileSize = document.getElementById('file-size');
+  const fileCount = document.getElementById('file-count');
+  const fileType = document.getElementById('file-type');
+  const fileTree = document.getElementById('file-tree');
+  const removeFileBtn = document.getElementById('remove-file');
+  const splitMethod = document.getElementById('split-method');
+  const sizeOptions = document.getElementById('size-options');
+  const partsOptions = document.getElementById('parts-options');
+  const zipOptions = document.getElementById('zip-options');
+  const chunkSize = document.getElementById('chunk-size');
+  const sizeUnit = document.getElementById('size-unit');
+  const numParts = document.getElementById('num-parts');
+  const zipName = document.getElementById('zip-name');
+  const compressionLevel = document.getElementById('compression-level');
+  const processButton = document.getElementById('process-button');
+  const progressContainer = document.getElementById('progress-container');
+  const progressBar = document.getElementById('progress-bar');
+  const progressPercent = document.getElementById('progress-percent');
+  const progressStatus = document.getElementById('progress-status');
+  const progressAction = document.getElementById('progress-action');
+  const resultsList = document.getElementById('results-list');
+  const downloadAllBtn = document.getElementById('download-all');
+  const clearResultsBtn = document.getElementById('clear-results');
+  const checksumOption = document.getElementById('checksum-option');
+  const preserveStructure = document.getElementById('preserve-structure');
+
+  // State
+  let currentFiles = [];
+  let fileEntries = [];
+  let processingResults = [];
+  let worker = null;
+
+  // Event Listeners
+  dropZone.addEventListener('click', () => fileInput.click());
+  dropZone.addEventListener('dragover', (e) => {
+    e.preventDefault();
+    dropZone.classList.add('border-forge-500');
+  });
+  dropZone.addEventListener('dragleave', () => {
+    dropZone.classList.remove('border-forge-500');
+  });
+  dropZone.addEventListener('drop', (e) => {
+    e.preventDefault();
+    dropZone.classList.remove('border-forge-500');
+    if (e.dataTransfer.items) {
+      handleDroppedItems(e.dataTransfer.items);
+    }
+  });
+
+  fileInput.addEventListener('change', () => {
+    if (fileInput.files.length) {
+      handleFileInput(fileInput.files);
+    }
+  });
+
+  removeFileBtn.addEventListener('click', resetFileSelection);
+  splitMethod.addEventListener('change', updateProcessingOptions);
+  processButton.addEventListener('click', processFiles);
+  downloadAllBtn.addEventListener('click', downloadAllResults);
+  clearResultsBtn.addEventListener('click', clearResults);
+
+  // Functions
+  function handleDroppedItems(items) {
+    const fileEntries = [];
+    const filePromises = [];
+    
+    for (let i = 0; i < items.length; i++) {
+      const item = items[i];
+      if (item.kind === 'file') {
+        const entry = item.webkitGetAsEntry ? item.webkitGetAsEntry() : null;
+        if (entry) {
+          filePromises.push(getFilesFromEntry(entry));
+        } else if (item.getAsFile()) {
+          fileEntries.push(item.getAsFile());
+        }
+      }
+    }
+    
+    if (filePromises.length) {
+      Promise.all(filePromises).then(results => {
+        const allFiles = results.flat();
+        handleFileSelection([...fileEntries, ...allFiles]);
+      });
+    } else {
+      handleFileSelection(fileEntries);
+    }
+  }
+
+  function getFilesFromEntry(entry, path = '') {
+    return new Promise((resolve) => {
+      const files = [];
+      
+      if (entry.isFile) {
+        entry.file(file => {
+          file.relativePath = path + file.name;
+          files.push(file);
+          resolve(files);
+        });
+      } else if (entry.isDirectory) {
+        const dirReader = entry.createReader();
+        dirReader.readEntries(entries => {
+          const entryPromises = [];
+          
+          for (let i = 0; i < entries.length; i++) {
+            const childEntry = entries[i];
+            const childPath = path + entry.name + '/';
+            entryPromises.push(getFilesFromEntry(childEntry, childPath));
+          }
+          
+          Promise.all(entryPromises).then(childFiles => {
+            resolve(childFiles.flat());
+          });
+        });
+      }
+    });
+  }
+
+  function handleFileInput(files) {
+    const fileArray = Array.from(files);
+    if (fileArray.length > 0) {
+      handleFileSelection(fileArray);
+    }
+  }
+
+  function handleFileSelection(files) {
+    if (!files || files.length === 0) return;
+
+    currentFiles = files;
+    fileEntries = files;
+    
+    if (files.length === 1 && !files[0].webkitRelativePath) {
+      // Single file
+      const file = files[0];
+      fileName.textContent = file.name;
+      fileSize.textContent = formatFileSize(file.size);
+      fileCount.textContent = '1 file';
+      fileType.textContent = `Type: ${file.type || 'Unknown'}`;
+      fileTree.classList.add('hidden');
+    } else {
+      // Multiple files or folder
+      const totalSize = files.reduce((sum, file) => sum + file.size, 0);
+      const folderName = files[0].webkitRelativePath ? files[0].webkitRelativePath.split('/')[0] : 'Selected Files';
+      
+      fileName.textContent = folderName;
+      fileSize.textContent = formatFileSize(totalSize);
+      fileCount.textContent = `${files.length} file${files.length > 1 ? 's' : ''}`;
+      fileType.textContent = 'Type: Folder';
+      
+      // Display folder structure
+      fileTree.innerHTML = '';
+      const fileTreeObj = {};
+      
+      files.forEach(file => {
+        const path = file.webkitRelativePath || file.name;
+        const parts = path.split('/');
+        let currentLevel = fileTreeObj;
+        
+        parts.forEach((part, index) => {
+          if (!currentLevel[part]) {
+            currentLevel[part] = index === parts.length - 1 ? file : {};
+          }
+          currentLevel = currentLevel[part];
+        });
+      });
+      
+      renderFileTree(fileTreeObj, fileTree);
+      fileTree.classList.remove('hidden');
+    }
+    
+    fileInfo.classList.remove('hidden');
+    processButton.disabled = false;
+    
+    // Set default ZIP name if not set
+    if (!zipName.value) {
+      const baseName = files.length === 1 ? 
+        files[0].name.replace(/\.[^/.]+$/, '') : 
+        (files[0].webkitRelativePath ? files[0].webkitRelativePath.split('/')[0] : 'archive');
+      zipName.value = baseName;
+    }
+  }
+
+  function renderFileTree(tree, container, indent = 0) {
+    Object.keys(tree).forEach(key => {
+      const item = tree[key];
+      const isFile = item instanceof File;
+      
+      const itemEl = document.createElement('div');
+      itemEl.className = 'flex items-center py-1';
+      itemEl.style.paddingLeft = `${indent * 12}px`;
+      
+      const icon = document.createElement('span');
+      icon.className = 'mr-1';
+      icon.innerHTML = isFile ? 
+        '<svg class="w-3 h-3 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>' :
+        '<svg class="w-3 h-3 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"></path></svg>';
+      
+      const name = document.createElement('span');
+      name.className = 'truncate';
+      name.textContent = key;
+      
+      if (isFile) {
+        const size = document.createElement('span');
+        size.className = 'ml-2 text-gray-500';
+        size.textContent = formatFileSize(item.size);
+        itemEl.appendChild(size);
+      }
+      
+      itemEl.prepend(icon, name);
+      container.appendChild(itemEl);
+      
+      if (!isFile) {
+        renderFileTree(item, container, indent + 1);
+      }
+    });
+  }
+
+  function resetFileSelection() {
+    currentFiles = [];
+    fileEntries = [];
+    fileInput.value = '';
+    fileInfo.classList.add('hidden');
+    processButton.disabled = true;
+  }
+
+  function formatFileSize(bytes) {
+    if (bytes === 0) return '0 Bytes';
+    const k = 1024;
+    const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+  }
+
+  function updateProcessingOptions() {
+    const method = splitMethod.value;
+    sizeOptions.classList.toggle('hidden', method !== 'size');
+    partsOptions.classList.toggle('hidden', method !== 'parts');
+    zipOptions.classList.toggle('hidden', method !== 'zip');
+    
+    if (method === 'zip') {
+      processButton.innerHTML = `
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+        </svg>
+        Create ZIP Archive
+      `;
+    } else {
+      processButton.innerHTML = `
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+        </svg>
+        Process Files
+      `;
+    }
+  }
+
+  function processFiles() {
+    if (!currentFiles || currentFiles.length === 0) return;
+
+    // Show progress
+    progressContainer.classList.remove('hidden');
+    progressBar.style.width = '0%';
+    progressPercent.textContent = '0%';
+    progressStatus.textContent = 'Preparing files...';
+    processingResults = [];
+
+    const method = splitMethod.value;
+    
+    if (method === 'zip') {
+      createZipArchive();
+    } else {
+      splitFiles();
+    }
+  }
+
+  function createZipArchive() {
+    progressAction.textContent = 'Creating ZIP archive...';
+    
+    if (!window.JSZip) {
+      alert('JSZip library is required for ZIP functionality. Loading it now...');
+      loadJSZip().then(() => createZipArchive());
+      return;
+    }
+    
+    const zip = new JSZip();
+    const compressionLevelValue = parseInt(compressionLevel.value);
+    let processedFiles = 0;
+    
+    currentFiles.forEach(file => {
+      const path = preserveStructure.checked && file.webkitRelativePath ? 
+        file.webkitRelativePath : 
+        file.name;
+      
+      zip.file(path, file, {
+        compression: compressionLevelValue > 0 ? 'DEFLATE' : 'STORE',
+        compressionOptions: {
+          level: compressionLevelValue
+        }
+      });
+      
+      processedFiles++;
+      updateProgress(processedFiles / currentFiles.length * 100, `Adding ${file.name}...`);
+    });
+    
+    zip.generateAsync({
+      type: 'blob',
+      compression: compressionLevelValue > 0 ? 'DEFLATE' : 'STORE',
+      compressionOptions: {
+        level: compressionLevelValue
+      }
+    }).then(content => {
+      const archiveName = zipName.value || 'archive';
+      const result = {
+        name: `${archiveName}.zip`,
+        blob: content,
+        size: content.size,
+        checksum: ''
+      };
+      
+      if (checksumOption.checked) {
+        calculateChecksum(content).then(checksum => {
+          result.checksum = checksum;
+          processingResults = [result];
+          showResults();
+          completeProcessing('ZIP archive created successfully!');
+        });
+      } else {
+        processingResults = [result];
+        showResults();
+        completeProcessing('ZIP archive created successfully!');
+      }
+    }).catch(error => {
+      progressStatus.textContent = 'Error creating ZIP: ' + error.message;
+    });
+  }
+
+  function splitFiles() {
+    progressAction.textContent = 'Splitting files...';
+    
+    // This is a simplified version - you would need to implement
+    // actual file splitting logic for multiple files
+    if (currentFiles.length > 1) {
+      alert('Splitting multiple files is not yet implemented. Creating ZIP archive instead.');
+      splitMethod.value = 'zip';
+      updateProcessingOptions();
+      createZipArchive();
+      return;
+    }
+    
+    const file = currentFiles[0];
+    const fileSize = file.size;
+    let chunkSizeBytes;
+    
+    if (splitMethod.value === 'size') {
+      const unit = sizeUnit.value;
+      const size = parseFloat(chunkSize.value);
+      
+      if (unit === 'KB') chunkSizeBytes = size * 1024;
+      else if (unit === 'MB') chunkSizeBytes = size * 1024 * 1024;
+      else if (unit === 'GB') chunkSizeBytes = size * 1024 * 1024 * 1024;
+    } else if (splitMethod.value === 'parts') {
+      const parts = parseInt(numParts.value);
+      chunkSizeBytes = Math.ceil(fileSize / parts);
+    }
+    
+    const chunks = Math.ceil(fileSize / chunkSizeBytes);
+    let offset = 0;
+    let partNumber = 1;
+    
+    function processNextChunk() {
+      if (offset >= fileSize) {
+        showResults();
+        completeProcessing('Files split successfully!');
+        return;
+      }
+      
+      const end = Math.min(offset + chunkSizeBytes, fileSize);
+      const chunk = file.slice(offset, end);
+      
+      const reader = new FileReader();
+      reader.onload = function(event) {
+        const result = {
+          name: `${file.name}.part${partNumber}`,
+          blob: new Blob([event.target.result]),
+          size: chunk.size,
+          checksum: ''
+        };
+        
+        if (checksumOption.checked) {
+          calculateChecksum(new Uint8Array(event.target.result)).then(checksum => {
+            result.checksum = checksum;
+            processingResults.push(result);
+            updateProgress(end / fileSize * 100, `Processed part ${partNumber} of ${chunks}...`);
+            offset = end;
+            partNumber++;
+            processNextChunk();
+          });
+        } else {
+          processingResults.push(result);
+          updateProgress(end / fileSize * 100, `Processed part ${partNumber} of ${chunks}...`);
+          offset = end;
+          partNumber++;
+          processNextChunk();
+        }
+      };
+      
+      reader.readAsArrayBuffer(chunk);
+    }
+    
+    processNextChunk();
+  }
+
+  function calculateChecksum(data) {
+    return new Promise(resolve => {
+      if (data instanceof Blob) {
+        const reader = new FileReader();
+        reader.onload = () => {
+          const arrayBuffer = reader.result;
+          const uint8Array = new Uint8Array(arrayBuffer);
+          resolve(calculateSimpleChecksum(uint8Array));
+        };
+        reader.readAsArrayBuffer(data);
+      } else if (data instanceof Uint8Array) {
+        resolve(calculateSimpleChecksum(data));
+      } else {
+        resolve('N/A');
+      }
+    });
+  }
+
+  function calculateSimpleChecksum(data) {
+    let hash = 0;
+    for (let i = 0; i < data.length; i++) {
+      hash = ((hash << 5) - hash) + data[i];
+      hash = hash & hash; // Convert to 32bit integer
+    }
+    return hash.toString(16);
+  }
+
+  function updateProgress(percent, status) {
+    const roundedPercent = Math.round(percent);
+    progressBar.style.width = roundedPercent + '%';
+    progressPercent.textContent = roundedPercent + '%';
+    progressStatus.textContent = status;
+  }
+
+  function completeProcessing(message) {
+    progressStatus.textContent = message;
+    setTimeout(() => {
+      progressContainer.classList.add('hidden');
+    }, 2000);
+  }
+
+  function showResults() {
+    resultsList.innerHTML = '';
+    
+    if (processingResults.length === 0) {
+      resultsList.innerHTML = `
+        <tr class="bg-gray-50">
+          <td colspan="4" class="px-4 py-4 text-center text-sm text-gray-500">No results to display</td>
+        </tr>
+      `;
+      downloadAllBtn.disabled = true;
+      return;
+    }
+    
+    processingResults.forEach(result => {
+      const row = document.createElement('tr');
+      row.className = 'hover:bg-gray-50';
+      row.innerHTML = `
+        <td class="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-900">
+          ${result.name}
+        </td>
+        <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500">
+          ${formatFileSize(result.size)}
+        </td>
+        <td class="px-4 py-3 text-sm text-gray-500">
+          <span class="truncate max-w-xs inline-block" title="${result.checksum}">
+            ${result.checksum || 'N/A'}
+          </span>
+        </td>
+        <td class="px-4 py-3 whitespace-nowrap text-right text-sm font-medium">
+          <button class="text-forge-600 hover:text-forge-900 download-result" data-name="${result.name}">
+            Download
+          </button>
+        </td>
+      `;
+      resultsList.appendChild(row);
+    });
+    
+    document.querySelectorAll('.download-result').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const name = e.target.getAttribute('data-name');
+        downloadResult(name);
+      });
+    });
+    
+    downloadAllBtn.disabled = false;
+  }
+
+  function downloadResult(name) {
+    const result = processingResults.find(r => r.name === name);
+    if (!result) return;
+    
+    const url = URL.createObjectURL(result.blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = name;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }
+
+  function downloadAllResults() {
+    if (processingResults.length === 0) return;
+    
+    if (processingResults.length === 1) {
+      downloadResult(processingResults[0].name);
+      return;
+    }
+    
+    if (!window.JSZip) {
+      alert('JSZip library is required for multiple downloads. Loading it now...');
+      loadJSZip().then(() => downloadAllResults());
+      return;
+    }
+    
+    progressContainer.classList.remove('hidden');
+    progressBar.style.width = '0%';
+    progressPercent.textContent = '0%';
+    progressStatus.textContent = 'Preparing download...';
+    
+    const zip = new JSZip();
+    let processed = 0;
+    
+    processingResults.forEach(result => {
+      zip.file(result.name, result.blob);
+      processed++;
+      
+      updateProgress(processed / processingResults.length * 100, 
+        `Adding ${result.name} to archive...`);
+    });
+    
+    zip.generateAsync({ type: 'blob' }).then(content => {
+      const url = URL.createObjectURL(content);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'processed_files.zip';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      
+      completeProcessing('Download complete!');
+    });
+  }
+
+  function loadJSZip() {
+    return new Promise((resolve, reject) => {
+      if (window.JSZip) {
+        resolve();
+        return;
+      }
+      
+      const script = document.createElement('script');
+      script.src = 'https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js';
+      script.onload = resolve;
+      script.onerror = reject;
+      document.head.appendChild(script);
+    });
+  }
+
+  function clearResults() {
+    if (confirm('Are you sure you want to clear all results?')) {
+      processingResults = [];
+      showResults();
+    }
+  }
+
+  // Initialize
+  updateProcessingOptions();
+});
+</script>
+
+
+
+
+
+
+    <footer class="bg-gray-100 text-gray-600 border-t border-gray-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+<div class="grid grid-cols-2 md:grid-cols-5 gap-8">
+    <div class="col-span-2">
+        <a href="#" class="flex items-center space-x-2 mb-6">
+            <img src="images/logo.svg" alt="Forge Logo" class="h-8 w-auto">
+            <span class="text-xl font-medium text-gray-900">Forge by Blacnova</span>
+        </a>
+        <p class="text-sm mb-6">
+            The complete open-source toolkit for creators, students, and professionals.
+        </p>
+        <div class="flex space-x-4">
+            <a href="https://x.com/forgebyblacnova" class="text-gray-500 hover:text-forge-600 transition-colors">
+                <span class="sr-only">Twitter</span>
+                <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84" />
+                </svg>
+            </a>
+            <a href="https://www.facebook.com/profile.php?id=61564521771890" class="text-gray-500 hover:text-forge-600 transition-colors">
+                <span class="sr-only">Facebook</span>
+                <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
+                    <path fill-rule="evenodd" d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" clip-rule="evenodd" />
+                </svg>
+            </a>
+            <a href="https://www.instagram.com/forgebyblacnova/" class="text-gray-500 hover:text-forge-600 transition-colors">
+                <span class="sr-only">Instagram</span>
+                <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
+                    <path fill-rule="evenodd" d="M12.315 2c2.43 0 2.784.013 3.808.06 1.064.049 1.791.218 2.427.465a4.902 4.902 0 011.772 1.153 4.902 4.902 0 011.153 1.772c.247.636.416 1.363.465 2.427.048 1.067.06 1.407.06 4.123v.08c0 2.643-.012 2.987-.06 4.043-.049 1.064-.218 1.791-.465 2.427a4.902 4.902 0 01-1.153 1.772 4.902 4.902 0 01-1.772 1.153c-.636.247-1.363.416-2.427.465-1.067.048-1.407.06-4.123.06h-.08c-2.643 0-2.987-.012-4.043-.06-1.064-.049-1.791-.218-2.427-.465a4.902 4.902 0 01-1.772-1.153 4.902 4.902 0 01-1.153-1.772c-.247-.636-.416-1.363-.465-2.427-.047-1.024-.06-1.379-.06-3.808v-.63c0-2.43.013-2.784.06-3.808.049-1.064.218-1.791.465-2.427a4.902 4.902 0 011.153-1.772A4.902 4.902 0 015.45 2.525c.636-.247 1.363-.416 2.427-.465C8.901 2.013 9.256 2 11.685 2h.63zm-.081 1.802h-.468c-2.456 0-2.784.011-3.807.058-.975.045-1.504.207-1.857.344-.467.182-.8.398-1.15.748-.35.35-.566.683-.748 1.15-.137.353-.3.882-.344 1.857-.047 1.023-.058 1.351-.058 3.807v.468c0 2.456.011 2.784.058 3.807.045.975.207 1.504.344 1.857.182.466.399.8.748 1.15.35.35.683.566 1.15.748.353.137.882.3 1.857.344 1.054.048 1.37.058 4.041.058h.08c2.597 0 2.917-.01 3.96-.058.976-.045 1.505-.207 1.858-.344.466-.182.8-.398 1.15-.748.35-.35.566-.683.748-1.15.137-.353.3-.882.344-1.857.048-1.055.058-1.37.058-4.041v-.08c0-2.597-.01-2.917-.058-3.96-.045-.976-.207-1.505-.344-1.858a3.097 3.097 0 00-.748-1.15 3.098 3.098 0 00-1.15-.748c-.353-.137-.882-.3-1.857-.344-1.023-.047-1.351-.058-3.807-.058zM12 6.865a5.135 5.135 0 110 10.27 5.135 5.135 0 010-10.27zm0 1.802a3.333 3.333 0 100 6.666 3.333 3.333 0 000-6.666zm5.338-3.205a1.2 1.2 0 110 2.4 1.2 1.2 0 010-2.4z" clip-rule="evenodd" />
+                </svg>
+            </a>
+        </div>
+    </div>
+                <div>
+                    <h3 class="text-sm font-semibold text-gray-900 tracking-wider uppercase mb-4">Explore</h3>
+                    <ul class="space-y-3">
+                        <li><a href="index.html#features" class="text-sm hover:text-forge-600 transition-colors">Features</a></li>
+                        <li><a href="index.html#tools" class="text-sm hover:text-forge-600 transition-colors">Tools</a></li>
+                        <li><a href="index.html#pricing" class="text-sm hover:text-forge-600 transition-colors">Pricing</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3 class="text-sm font-semibold text-gray-900 tracking-wider uppercase mb-4">Company</h3>
+                    <ul class="space-y-3">
+                        <li><a href="about.html" class="text-sm hover:text-forge-600 transition-colors">About</a></li>
+                        <li><a href="contact.html" class="text-sm hover:text-forge-600 transition-colors">Contact</a></li>
+                        <li><a href="index.html#faq" class="text-sm hover:text-forge-600 transition-colors">FAQ</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-sm font-semibold text-gray-900 tracking-wider uppercase mb-4">Legal</h3>
+                    <ul class="space-y-3">
+                        <li><a href="policy.html" class="text-sm hover:text-forge-600 transition-colors">Privacy</a></li>
+                        <li><a href="policy.html#legal" class="text-sm hover:text-forge-600 transition-colors">Terms</a></li>
+                        <li><a href="policy.html#cookies" class="text-sm hover:text-forge-600 transition-colors">Cookies</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="mt-12 pt-8 border-t border-gray-200 flex flex-col md:flex-row justify-between items-center">
+                <p class="text-sm">
+                    &copy; 2025 Forge by Blacnova. All rights reserved.
+                </p>
+
+            </div>
+        </div>
+         <!-- Support Us Section -->
+      <div class="bg-forge-600 mt-6 text-white text-center py-4 px-4">
+        <p class="text-sm">
+          We don’t rely on ads to keep running. If you love Forge, consider 
+          <a href="https://buymeacoffee.com/galore" class="underline hover:text-gray-200 transition-colors">supporting us</a>.
+        </p>
+      </div>
+    </footer>
+</body>
+</html>
